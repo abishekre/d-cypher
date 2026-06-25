@@ -12,19 +12,13 @@
     <link rel="apple-touch-icon" href="icon.svg">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;800&family=Outfit:wght@600;800&family=Playfair+Display:wght@700&family=VT323&family=Righteous&family=Space+Mono&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@500;800&family=Outfit:wght@600;800&family=Playfair+Display:wght@700&family=VT323&family=Righteous&family=Space+Mono&family=Cinzel:wght@600&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        theme: {
-                            bg: 'var(--bg)', card: 'var(--card)', primary: 'var(--primary)',
-                            onPrimary: 'var(--on-primary)', text: 'var(--text)', muted: 'var(--muted)', 
-                            border: 'var(--border)', glow: 'var(--glow)'
-                        }
-                    },
+                    colors: { theme: { bg: 'var(--bg)', card: 'var(--card)', primary: 'var(--primary)', onPrimary: 'var(--on-primary)', text: 'var(--text)', muted: 'var(--muted)', border: 'var(--border)', glow: 'var(--glow)' } },
                     fontFamily: { sans: ['var(--font-sans)'], display: ['var(--font-display)'] }
                 }
             }
@@ -32,81 +26,89 @@
     </script>
 
     <style>
-        :root, [data-theme="modern"] {
-            --bg: #0f1117; --card: #1a1d27; --primary: #6366f1; --on-primary: #ffffff; 
-            --text: #ffffff; --muted: #9ca3af; --border: rgba(255,255,255,0.05); --glow: rgba(99,102,241,0.3);
-            --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif;
-        }
-        [data-theme="cyber"] {
-            --bg: #020617; --card: rgba(30,41,59,0.6); --primary: #22d3ee; --on-primary: #000000; 
-            --text: #ffffff; --muted: #64748b; --border: rgba(34,211,238,0.3); --glow: rgba(34,211,238,0.4);
-            --font-sans: 'Space Mono', monospace; --font-display: 'Orbitron', sans-serif;
-        }
-        [data-theme="retro"] {
-            --bg: #000000; --card: #000000; --primary: #39ff14; --on-primary: #000000; 
-            --text: #39ff14; --muted: #1a7a08; --border: #39ff14; --glow: rgba(57,255,20,0.5);
-            --font-sans: 'VT323', monospace; --font-display: 'VT323', monospace;
-        }
-        [data-theme="paper"] {
-            --bg: #f4f4f5; --card: #ffffff; --primary: #18181b; --on-primary: #ffffff; 
-            --text: #18181b; --muted: #a1a1aa; --border: rgba(0,0,0,0.1); --glow: rgba(0,0,0,0.1);
-            --font-sans: 'Inter', sans-serif; --font-display: 'Playfair Display', serif;
-        }
-        [data-theme="sunset"] {
-            --bg: #1a0b2e; --card: #2d1b4e; --primary: #ff007f; --on-primary: #ffffff; 
-            --text: #ffffff; --muted: #fca5a5; --border: #ff007f; --glow: rgba(255,0,127,0.5);
-            --font-sans: 'Inter', sans-serif; --font-display: 'Righteous', cursive;
-        }
-
+        :root, [data-theme="modern"] { --bg: #0f1117; --card: #1a1d27; --primary: #6366f1; --on-primary: #ffffff; --text: #ffffff; --muted: #9ca3af; --border: rgba(255,255,255,0.05); --glow: rgba(99,102,241,0.3); --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif; }
+        [data-theme="cyber"] { --bg: #020617; --card: rgba(30,41,59,0.6); --primary: #22d3ee; --on-primary: #000000; --text: #ffffff; --muted: #64748b; --border: rgba(34,211,238,0.3); --glow: rgba(34,211,238,0.4); --font-sans: 'Space Mono', monospace; --font-display: 'Orbitron', sans-serif; }
+        [data-theme="retro"] { --bg: #000000; --card: #000000; --primary: #39ff14; --on-primary: #000000; --text: #39ff14; --muted: #1a7a08; --border: #39ff14; --glow: rgba(57,255,20,0.5); --font-sans: 'VT323', monospace; --font-display: 'VT323', monospace; }
+        
         body { background-color: var(--bg); transition: all 0.5s ease; -webkit-tap-highlight-color: transparent; }
         .btn-press { transition: transform 0.05s, background-color 0.2s, box-shadow 0.2s; }
         .btn-press:active:not(:disabled) { transform: scale(0.92); }
         .glow-effect { box-shadow: 0 0 35px var(--glow); border-color: var(--primary) !important; }
-        
-        /* 3D Parallax Container setup */
         #target-zone-container { perspective: 1000px; }
         #target-zone { transition: transform 0.1s ease-out, box-shadow 0.3s ease; will-change: transform; transform-style: preserve-3d; }
-        
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
         .animate-shake { animation: shake 0.3s ease-in-out; }
+        .bad-robot-text { font-family: 'Space Mono', monospace; color: #f43f5e; text-shadow: 0 0 10px rgba(244,63,94,0.4); letter-spacing: 0.5px; }
     </style>
 </head>
 <body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center p-4 sm:p-6 overflow-hidden relative">
 
-    <div id="theme-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl">
-            <h2 class="font-display text-2xl font-bold mb-1">Aesthetics</h2>
-            <div id="theme-list" class="flex flex-col gap-3 mt-4"></div>
-            <button onclick="closeThemes()" class="mt-6 w-full py-3 rounded-xl bg-theme-border text-theme-text font-bold uppercase tracking-widest text-sm">Close</button>
+    <div id="install-banner" class="hidden absolute top-0 left-0 w-full bg-theme-primary text-theme-onPrimary px-4 py-3 flex justify-between items-center z-50 shadow-lg">
+        <span class="text-sm font-bold">Install D-Cypher for the full experience.</span>
+        <div class="flex gap-2">
+            <button onclick="dismissInstall()" class="text-xs opacity-80 px-2 py-1">Later</button>
+            <button onclick="installApp()" class="bg-theme-bg text-theme-text text-xs font-bold px-3 py-1.5 rounded-lg shadow-md">Install</button>
         </div>
     </div>
 
-    <div class="w-full max-w-sm flex flex-col min-h-[90dvh] justify-between relative z-10 gap-4 pb-2">
+    <!-- Main Menu / Settings Modal -->
+    <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl flex flex-col gap-6">
+            <div class="flex justify-between items-center">
+                <h2 class="font-display text-2xl font-bold">System Menu</h2>
+                <button onclick="closeMenu()" class="text-theme-muted font-bold text-xl">&times;</button>
+            </div>
+            
+            <div class="bg-theme-bg/50 border border-theme-border p-4 rounded-2xl flex justify-between items-center transition-all" id="robot-container">
+                <div>
+                    <h3 class="font-bold text-rose-500 font-mono">Bad Robot Mode</h3>
+                    <p class="text-xs text-theme-muted">Enable relentless AI mockery.</p>
+                </div>
+                <input type="checkbox" id="bad-robot-toggle" onchange="toggleRobot(this.checked)" class="w-6 h-6 accent-rose-500 cursor-pointer">
+            </div>
+
+            <div>
+                <h3 class="font-bold text-sm text-theme-muted uppercase tracking-widest mb-2">Aesthetics (Buy with Points)</h3>
+                <div id="theme-list" class="flex flex-col gap-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main UI Container -->
+    <div class="w-full max-w-sm flex flex-col min-h-[90dvh] justify-between relative z-10 gap-4 pb-2 mt-4">
         
-        <header class="flex justify-between items-center pt-2 flex-shrink-0">
-            <button onclick="openThemes()" id="current-theme-btn" class="bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-lg px-3 py-1.5 hover:bg-theme-border transition-colors shadow-sm">
-                📱 Modern
+        <!-- Economy Header -->
+        <header class="flex justify-between items-center flex-shrink-0">
+            <button onclick="openMenu()" class="btn-press bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-xl px-3 py-2 shadow-sm flex items-center gap-2">
+                ⚙️ Menu
             </button>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleMode()" id="mode-toggle" class="text-xs font-bold uppercase tracking-widest text-theme-muted hover:text-theme-primary transition-colors">
+            <div class="flex items-center gap-2">
+                <button onclick="toggleMode()" id="mode-toggle" class="text-[10px] font-bold uppercase tracking-widest bg-theme-bg/50 border border-theme-border px-2 py-1 rounded-lg hover:text-theme-primary transition-colors">
                     🔄 Endless
                 </button>
-                <div class="bg-theme-card px-4 py-1.5 rounded-full flex items-center gap-2 border border-theme-border shadow-sm">
-                    <span id="score-display" class="font-display text-theme-primary font-bold text-lg">0</span>
+                <div class="bg-theme-card px-3 py-2 rounded-xl flex items-center gap-3 border border-theme-border shadow-sm font-bold text-sm">
+                    <span id="streak-display" class="text-orange-400">🔥0</span>
+                    <span id="coin-display" class="text-yellow-400">🪙0</span>
+                    <span id="score-display" class="text-theme-primary ml-1">0</span>
                 </div>
             </div>
         </header>
 
+        <!-- Target Zone -->
         <div id="target-zone-container" class="flex-shrink-0 w-full relative">
-            <div id="target-zone" class="bg-theme-card rounded-[2rem] p-6 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl">
-                <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest mb-1">Target</span>
-                <span id="target-display" class="font-display text-6xl sm:text-7xl leading-tight font-extrabold text-theme-text tracking-tight transition-colors duration-300">0</span>
+            <div id="target-zone" class="bg-theme-card rounded-[2rem] p-6 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[220px]">
+                <div class="flex justify-between w-full absolute top-6 px-8">
+                    <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest">Target</span>
+                    <span id="timer-display" class="text-theme-muted font-mono text-xs">⏱ 00:00</span>
+                </div>
                 
-                <div id="message-display" class="absolute bottom-12 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-theme-primary text-center px-4 w-full"></div>
+                <span id="target-display" class="font-display text-6xl sm:text-7xl leading-tight font-extrabold text-theme-text tracking-tight transition-colors duration-300 mt-2">0</span>
+                
+                <div id="message-display" class="absolute bottom-12 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-center px-4 w-full"></div>
                 
                 <div class="absolute bottom-3 flex gap-2 w-full justify-center px-4 z-20">
-                    <button id="solve-btn" onclick="revealSolution()" class="hidden bg-theme-border text-theme-text font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md">
-                        Reveal Key 🔑
+                    <button id="rewind-btn" onclick="buyRewind()" class="hidden bg-yellow-500 text-yellow-950 font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all shadow-md">
+                        Buy Rewind (🪙1)
                     </button>
                     <button id="share-btn" onclick="shareResult()" class="hidden bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md">
                         Share Result 🔗
@@ -115,18 +117,20 @@
             </div>
         </div>
 
+        <!-- Workbench -->
         <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl p-4 min-h-[90px] flex flex-col justify-center items-center relative border border-theme-border shadow-sm">
             <div id="equation-display" class="font-display text-2xl flex flex-wrap gap-2 items-center justify-center text-theme-text"></div>
             <div id="live-result-display" class="font-display text-3xl font-bold text-theme-text mt-1 h-8 flex items-center justify-center"></div>
         </div>
 
+        <!-- Inputs -->
         <div class="flex flex-col gap-3 flex-shrink-0">
             <div id="numbers-row-1" class="grid grid-cols-4 gap-3"></div>
             <div id="numbers-row-2" class="flex justify-center gap-3"></div>
         </div>
-
         <div id="operators-row" class="flex justify-center gap-3 sm:gap-4 flex-shrink-0"></div>
 
+        <!-- System Controls -->
         <div class="grid grid-cols-3 gap-3 mt-auto pt-2 flex-shrink-0">
             <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border">UNDO</button>
             <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border">CLEAR</button>
@@ -135,114 +139,101 @@
     </div>
 
     <script>
-        // --- 1. Audio & Haptics Engine ---
-        let audioCtx = null;
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
-        document.body.addEventListener('touchstart', initAudio, {once: true});
-        document.body.addEventListener('click', initAudio, {once: true});
-
-        function playTone(freq, type, duration, vol=0.05) {
-            if(!audioCtx) return;
-            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        // --- Service Worker & PWA Logic ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
         }
 
-        const sfx = {
-            tap: () => { playTone(600, 'sine', 0.1); if(navigator.vibrate) navigator.vibrate(10); },
-            op: () => { playTone(400, 'triangle', 0.1); if(navigator.vibrate) navigator.vibrate(15); },
-            error: () => { playTone(150, 'sawtooth', 0.2, 0.1); if(navigator.vibrate) navigator.vibrate([30, 50, 30]); },
-            win: () => { 
-                playTone(523.25, 'sine', 0.1); setTimeout(()=>playTone(659.25, 'sine', 0.2), 100); setTimeout(()=>playTone(783.99, 'sine', 0.4), 200); 
-                if(navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 150]);
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredPrompt = e;
+            document.getElementById('install-banner').classList.remove('hidden');
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('install-banner').classList.add('hidden'); });
             }
+        }
+        function dismissInstall() { document.getElementById('install-banner').classList.add('hidden'); }
+
+        // --- Intelligent "Bad Robot" Engine ---
+        const robotBrain = {
+            syntax: [ "Two operators? Fascinating logic.", "That's not how math works.", "Syntax error. Meatbag error.", "Did you skip basic arithmetic?", "Button mashing won't save you." ],
+            decimals: [ "Decimals are for the weak.", "I asked for whole numbers, not pieces.", "Clean division only. Try again.", "Did you mean to fracture the data?" ],
+            incomplete: [ "Seven nodes. It's not a suggestion.", "Leaving data on the table?", "Count your numbers. I'll wait.", "Are the remaining nodes invisible to you?" ],
+            far: [ "Were you aiming for a different galaxy?", "Mathematically bankrupt.", "Not even in the right zip code.", "A calculator just shed a tear." ],
+            close: [ "Off by a hair. How frustrating.", "Almost mathematically competent.", "Close, but still a failure.", "I've seen worse. Barely." ],
+            slow: [ "Glaciers move faster than your neurons.", "I aged a millennium waiting for that.", "Finally. Took you long enough." ],
+            win: [ "Beginner's luck.", "Acceptable. Don't let it go to your head.", "Even a broken clock is right twice a day.", "Calculators can do that too." ]
         };
 
-        // --- 2. AAA Parallax Gyroscope UI ---
-        const targetZone = document.getElementById('target-zone');
-        
-        // Mouse parallax (Desktop)
-        document.addEventListener('mousemove', (e) => {
-            if(window.innerWidth < 768) return;
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            targetZone.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
+        let lastRobotInsult = "";
 
-        // Gyroscope parallax (Mobile)
-        window.addEventListener('deviceorientation', (e) => {
-            if(!e.beta || !e.gamma) return;
-            const x = Math.min(Math.max(e.beta - 45, -20), 20) / 1.5; 
-            const y = Math.min(Math.max(e.gamma, -20), 20) / 1.5;
-            targetZone.style.transform = `rotateY(${y}deg) rotateX(${-x}deg)`;
-        });
+        function speakRobot(context) {
+            if (!badRobotMode) return;
+            const options = robotBrain[context];
+            let chosen = options[Math.floor(Math.random() * options.length)];
+            
+            // Intelligent check: Never repeat the exact same insult twice in a row
+            while (chosen === lastRobotInsult && options.length > 1) {
+                chosen = options[Math.floor(Math.random() * options.length)];
+            }
+            
+            lastRobotInsult = chosen;
+            
+            const m = document.getElementById('message-display');
+            m.innerText = `🤖 "${chosen}"`;
+            m.className = "absolute bottom-12 text-sm font-bold transition-opacity duration-300 z-10 text-center px-4 w-full bad-robot-text";
+            m.style.opacity = '1';
+        }
 
-        // --- 3. Thematic Configuration ---
+        // --- Core State & Persistence ---
         const themeConfig = [
             { id: 'modern', name: 'Modern', cost: 0, emoji: '📱' },
             { id: 'cyber', name: 'Cyberpunk', cost: 500, emoji: '⚡' },
-            { id: 'retro', name: 'Arcade', cost: 1500, emoji: '👾' },
-            { id: 'paper', name: 'Paper', cost: 5000, emoji: '📜' },
-            { id: 'sunset', name: 'Synthwave', cost: 15000, emoji: '🌇' }
+            { id: 'retro', name: 'Arcade', cost: 1500, emoji: '👾' }
         ];
 
-        let score = 0, currentTheme = 'modern', isDailyMode = false;
-        let target = 0, numbers = [], expression = [], isRoundOver = false;
-        let currentSolutionKey = ""; // Stores the background solver's path
-        
-        // AAA UTC Timezone Fix (Everyone gets the same puzzle instantly)
+        let score = 0, coins = 0, streak = 0, currentTheme = 'modern';
+        let isDailyMode = false, badRobotMode = false;
+        let bestTime = 9999, startTime = 0, timerInterval = null, timeElapsed = 0;
         let todaySeed = new Date().toISOString().split('T')[0];
-
-        function seededRandom(seedStr) {
-            let h = 0; for(let i = 0; i < seedStr.length; i++) h = Math.imul(31, h) + seedStr.charCodeAt(i) | 0;
-            return function() {
-                h = Math.imul(h ^ h >>> 15, h | 1); h ^= h + Math.imul(h ^ h >>> 7, h | 61);
-                return ((h ^ h >>> 14) >>> 0) / 4294967296;
-            }
-        }
-
+        
+        let target = 0, numbers = [], expression = [], isRoundOver = false, hasFailedDaily = false;
         const operators = ['+', '-', '×', '÷'];
         const opMap = { '+': '+', '-': '-', '×': '*', '÷': '/' };
 
-        // --- 4. The guaranteed "Aha!" Generator ---
-        // Brute forces a mathematically sound PEMDAS equation for the puzzle
-        function generateValidPuzzle(randFunc) {
-            for(let attempts = 0; attempts < 500; attempts++) {
-                const smalls = Array.from({length: 5}, () => Math.floor(randFunc() * 10) + 1);
-                const larges = [25, 50, 75, 100].sort(() => 0.5 - randFunc()).slice(0, 2);
-                const nums = [...smalls, ...larges].sort(() => 0.5 - randFunc());
-
-                const ops = ['+', '-', '*', '/'];
-                const chosenOps = Array.from({length: 6}, () => ops[Math.floor(randFunc() * ops.length)]);
-                
-                const eq = `${nums[0]} ${chosenOps[0]} ${nums[1]} ${chosenOps[1]} ${nums[2]} ${chosenOps[2]} ${nums[3]} ${chosenOps[3]} ${nums[4]} ${chosenOps[4]} ${nums[5]} ${chosenOps[5]} ${nums[6]}`;
-                
-                try {
-                    const result = new Function('return ' + eq)();
-                    // Must be a clean integer between 100 and 999
-                    if (result % 1 === 0 && result > 100 && result < 999) {
-                        return { target: result, numbers: nums, solution: eq.replace(/\*/g, '×').replace(/\//g, '÷') };
-                    }
-                } catch(e) {}
-            }
-            return generateValidPuzzle(randFunc); // recursive retry
-        }
-
         function initApp() {
             score = parseInt(localStorage.getItem('dcypher_score')) || 0;
+            coins = parseInt(localStorage.getItem('dcypher_coins')) || 0;
             currentTheme = localStorage.getItem('dcypher_theme') || 'modern';
-            document.getElementById('score-display').innerText = formatNumber(score);
-            applyTheme(currentTheme);
-            startNewGame();
+            badRobotMode = localStorage.getItem('dcypher_robot') === 'true';
+            document.getElementById('bad-robot-toggle').checked = badRobotMode;
+            
+            checkStreak(); updateEconomyUI(); applyTheme(currentTheme); startNewGame();
         }
 
-        function formatNumber(num) { return num >= 1000 ? (num/1000).toFixed(1) + 'k' : num; }
+        function checkStreak() {
+            const lastPlayed = localStorage.getItem('dcypher_lastDaily');
+            streak = parseInt(localStorage.getItem('dcypher_streak')) || 0;
+            if (lastPlayed) {
+                const diffDays = Math.ceil(Math.abs(new Date(todaySeed) - new Date(lastPlayed)) / (1000 * 60 * 60 * 24)); 
+                if (diffDays > 1 && diffDays < 30) { streak = 0; localStorage.setItem('dcypher_streak', streak); }
+            }
+        }
+
+        function updateEconomyUI() {
+            document.getElementById('score-display').innerText = score >= 1000 ? (score/1000).toFixed(1) + 'k' : score;
+            document.getElementById('coin-display').innerText = `🪙${coins}`;
+            document.getElementById('streak-display').innerText = `🔥${streak}`;
+        }
+
+        function saveEconomy() {
+            localStorage.setItem('dcypher_score', score); localStorage.setItem('dcypher_coins', coins);
+            localStorage.setItem('dcypher_streak', streak); updateEconomyUI();
+        }
 
         function toggleMode() {
             isDailyMode = !isDailyMode;
@@ -251,163 +242,186 @@
             startNewGame();
         }
 
+        function toggleRobot(val) {
+            badRobotMode = val; localStorage.setItem('dcypher_robot', val);
+            const container = document.getElementById('robot-container');
+            if(val) container.classList.add('shadow-[0_0_15px_rgba(244,63,94,0.3)]', 'border-rose-500');
+            else container.classList.remove('shadow-[0_0_15px_rgba(244,63,94,0.3)]', 'border-rose-500');
+        }
+
+        function startTimer() {
+            if(timerInterval) return;
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                timeElapsed = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('timer-display').innerText = `⏱ ${String(Math.floor(timeElapsed / 60)).padStart(2, '0')}:${String(timeElapsed % 60).padStart(2, '0')}`;
+            }, 1000);
+        }
+
         function startNewGame() {
+            clearInterval(timerInterval); timerInterval = null; timeElapsed = 0;
+            document.getElementById('timer-display').innerText = `⏱ 00:00`;
+            
             let rand = isDailyMode ? seededRandom(todaySeed) : Math.random;
+            for(let attempts = 0; attempts < 500; attempts++) {
+                const smalls = Array.from({length: 5}, () => Math.floor(rand() * 10) + 1);
+                const larges = [25, 50, 75, 100].sort(() => 0.5 - rand()).slice(0, 2);
+                numbers = [...smalls, ...larges].sort(() => 0.5 - rand());
+                target = Math.floor(rand() * 900) + 100; break;
+            }
             
-            const puzzle = generateValidPuzzle(rand);
-            numbers = puzzle.numbers;
-            target = puzzle.target;
-            currentSolutionKey = puzzle.solution;
-            
-            expression = [];
-            isRoundOver = false;
-            
+            expression = []; isRoundOver = false; hasFailedDaily = false;
             document.getElementById('message-display').style.opacity = '0';
             document.getElementById('share-btn').classList.add('hidden');
-            document.getElementById('solve-btn').classList.add('hidden');
+            document.getElementById('rewind-btn').classList.add('hidden');
             document.getElementById('target-zone').classList.remove('glow-effect');
             
             if (isDailyMode && localStorage.getItem('dcypher_daily') === todaySeed) {
-                isRoundOver = true;
-                handleWinVisuals("YOU DECRYPTED TODAY'S PUZZLE!");
+                isRoundOver = true; showStandardMessage("YOU DECRYPTED TODAY'S PUZZLE!");
+                document.getElementById('target-zone').classList.add('glow-effect');
+                document.getElementById('share-btn').classList.remove('hidden');
             }
-            
             render();
         }
 
-        // --- interactions ---
+        function triggerError(context = null) {
+            if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
+            const wb = document.getElementById('workbench');
+            wb.classList.remove('animate-shake'); void wb.offsetWidth; wb.classList.add('animate-shake');
+            
+            if (badRobotMode && context) speakRobot(context);
+        }
+
+        function showStandardMessage(msg) {
+            const m = document.getElementById('message-display');
+            m.innerText = msg; 
+            m.className = "absolute bottom-12 text-sm font-bold transition-opacity duration-300 z-10 text-center px-4 w-full text-theme-primary";
+            m.style.opacity = '1';
+        }
+
+        // --- Interaction ---
         function handleNumberClick(num, index) {
-            if (isRoundOver || expression.some(item => item.type === 'num' && item.index === index)) return;
-            const lastItem = expression[expression.length - 1];
-            if (!lastItem || lastItem.type === 'op') {
-                sfx.tap(); expression.push({ type: 'num', value: num, index: index }); render();
-            } else triggerError();
+            if (isRoundOver || hasFailedDaily || expression.some(item => item.type === 'num' && item.index === index)) return;
+            const last = expression[expression.length - 1];
+            if (!last || last.type === 'op') {
+                if(expression.length === 0) startTimer();
+                if(navigator.vibrate) navigator.vibrate(10);
+                expression.push({ type: 'num', value: num, index: index }); render();
+            } else triggerError('syntax'); // Robot knows you tried two numbers
         }
 
         function handleOperatorClick(op) {
-            if (isRoundOver) return;
-            const lastItem = expression[expression.length - 1];
-            if (lastItem && lastItem.type === 'num') {
-                sfx.op(); expression.push({ type: 'op', value: op }); render();
-            } else triggerError();
+            if (isRoundOver || hasFailedDaily) return;
+            const last = expression[expression.length - 1];
+            if (last && last.type === 'num') {
+                if(navigator.vibrate) navigator.vibrate(15);
+                expression.push({ type: 'op', value: op }); render();
+            } else triggerError('syntax'); // Robot knows you tried two operators
         }
 
-        function handleUndo() { if (isRoundOver || expression.length === 0) return; sfx.tap(); expression.pop(); render(); }
-        function handleClear() { if (isRoundOver) return; sfx.error(); expression = []; render(); }
+        function handleUndo() { if (isRoundOver || hasFailedDaily || expression.length === 0) return; expression.pop(); render(); }
+        function handleClear() { if (isRoundOver || hasFailedDaily) return; expression = []; render(); }
 
-        function triggerError() {
-            sfx.error();
-            const wb = document.getElementById('workbench');
-            wb.classList.remove('animate-shake'); void wb.offsetWidth; wb.classList.add('animate-shake');
-        }
-
-        function showMessage(msg) {
-            const m = document.getElementById('message-display');
-            m.innerText = msg; m.style.opacity = '1';
-        }
-
-        function handleWinVisuals(msg) {
-            showMessage(msg);
-            document.getElementById('target-zone').classList.add('glow-effect');
-            document.getElementById('share-btn').classList.remove('hidden');
-            document.getElementById('solve-btn').classList.add('hidden');
-        }
-
-        function handleExactMatch() {
-            isRoundOver = true;
-            sfx.win();
-            handleWinVisuals("PERFECT DECRYPTION!");
-
-            if (isDailyMode) {
-                localStorage.setItem('dcypher_daily', todaySeed);
-            } else {
-                score += 150; 
-                localStorage.setItem('dcypher_score', score);
-                document.getElementById('score-display').innerText = formatNumber(score);
-                setTimeout(() => startNewGame(), 3000);
-            }
-        }
-
+        // --- Validation & Win Logic ---
         function handleSubmit() {
-            if (isRoundOver || expression.length === 0) return;
-
-            const numCount = expression.filter(item => item.type === 'num').length;
-            if (numCount < 7) {
-                triggerError(); showMessage("MUST USE ALL 7 DATA NODES"); return;
+            if (isRoundOver || hasFailedDaily || expression.length === 0) return;
+            
+            if (expression.filter(item => item.type === 'num').length < 7) { 
+                triggerError('incomplete'); 
+                if(!badRobotMode) showStandardMessage("MUST USE ALL 7 DATA NODES"); 
+                return; 
             }
 
             const evalString = expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' ');
             try {
                 const result = new Function('return ' + evalString)();
-                if (result !== target) {
-                    triggerError();
-                    showMessage(`INCORRECT. DISTANCE: ${Math.abs(result - target)}`);
-                    // Reveal the solver tool after a failure
-                    document.getElementById('solve-btn').classList.remove('hidden');
+                if (result === target) handleExactMatch();
+                else {
+                    const distance = Math.abs(result - target);
+                    let context = distance > 15 ? 'far' : 'close';
+                    if (timeElapsed > 60 && Math.random() > 0.5) context = 'slow'; // Sometimes insult speed if slow
+                    
+                    triggerError(context);
+                    if (isDailyMode) {
+                        hasFailedDaily = true;
+                        if(!badRobotMode) showStandardMessage(`CRITICAL FAILURE. DISTANCE: ${distance}`);
+                        document.getElementById('rewind-btn').classList.remove('hidden');
+                    } else {
+                        if(!badRobotMode) showStandardMessage(`INCORRECT. DISTANCE: ${distance}`);
+                    }
                 }
-            } catch (e) { triggerError(); }
+            } catch (e) { triggerError('syntax'); }
         }
 
-        function revealSolution() {
+        function handleExactMatch() {
+            clearInterval(timerInterval); timerInterval = null;
             isRoundOver = true;
-            sfx.error();
-            showMessage(`KEY: ${currentSolutionKey}`);
-            document.getElementById('solve-btn').classList.add('hidden');
-            if(!isDailyMode) setTimeout(startNewGame, 4000);
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 150]);
+            
+            let streakMultiplier = 1 + (Math.min(streak, 10) * 0.1); 
+            document.getElementById('target-zone').classList.add('glow-effect');
+            document.getElementById('share-btn').classList.remove('hidden');
+
+            if (isDailyMode) {
+                if (localStorage.getItem('dcypher_daily') !== todaySeed) {
+                    streak++; localStorage.setItem('dcypher_lastDaily', todaySeed); localStorage.setItem('dcypher_daily', todaySeed);
+                }
+                if (badRobotMode) speakRobot('win');
+                else showStandardMessage(`PERFECT! 🔥 STREAK: ${streak}`);
+            } else {
+                score += Math.floor(150 * streakMultiplier); coins++;
+                if (badRobotMode) speakRobot('win');
+                else showStandardMessage(`PERFECT! +${Math.floor(150 * streakMultiplier)} PTS`);
+                setTimeout(() => startNewGame(), 3000);
+            }
+            saveEconomy();
         }
 
-        // --- Fake Global Telemetry & Sharing ---
-        function shareResult() {
-            const activeThemeObj = themeConfig.find(t => t.id === currentTheme);
-            const modeText = isDailyMode ? `Daily Crypt ${todaySeed}` : `Endless Grind`;
-            
-            // Generate telemetry stat based on score/seed
-            let percentile = isDailyMode ? (seededRandom(todaySeed + "stat")() * 15 + 1).toFixed(1) : (Math.random() * 20 + 5).toFixed(1);
-            
-            let sequenceStr = expression.map(item => item.type === 'num' ? '🟦' : (['+', '-'].includes(item.value) ? '🟨' : '🟪')).join('');
+        function buyRewind() {
+            if (coins >= 1) {
+                coins--; saveEconomy(); hasFailedDaily = false;
+                document.getElementById('rewind-btn').classList.add('hidden');
+                showStandardMessage("REWIND DEPLOYED. RETRYING...");
+                setTimeout(() => { expression.pop(); render(); document.getElementById('message-display').style.opacity = '0'; }, 1000);
+            } else {
+                triggerError(); showMessage(badRobotMode ? "🤖 You are mathematically AND financially broke." : "INSUFFICIENT COINS.", badRobotMode);
+            }
+        }
 
-            const shareText = `D-Cypher | ${modeText}\n🎯 ${target} Decrypted\nTop ${percentile}% of players\n${sequenceStr}\n${activeThemeObj.emoji} Aesthetic: ${activeThemeObj.name}`;
-            
-            navigator.clipboard.writeText(shareText).then(() => {
-                const btn = document.getElementById('share-btn');
-                btn.innerText = "Copied! ✨";
-                setTimeout(() => btn.innerText = "Share Result 🔗", 2000);
+        function getTitle() {
+            if (timeElapsed < 15) return "Savant";
+            if (!expression.map(x => x.value).includes('-') && !expression.map(x => x.value).includes('÷')) return "Pacifist";
+            if (timeElapsed > 60) return "Brute Forcer";
+            return "Decrypter";
+        }
+
+        function shareResult() {
+            const text = `D-Cypher | ${isDailyMode ? `Daily Crypt ${todaySeed}` : `Endless Grind`}\n🎯 ${target} | ⏱ ${timeElapsed}s\nTitle: ${getTitle()} | 🔥 Streak: ${streak}\n${expression.map(item => item.type === 'num' ? '🟦' : (['+', '-'].includes(item.value) ? '🟨' : '🟪')).join('')}`;
+            navigator.clipboard.writeText(text).then(() => {
+                document.getElementById('share-btn').innerText = "Copied! ✨";
+                setTimeout(() => document.getElementById('share-btn').innerText = "Share Result 🔗", 2000);
             });
         }
 
-        // --- Theming & Rendering ---
-        function applyTheme(themeId) {
-            document.documentElement.setAttribute('data-theme', themeId);
-            const t = themeConfig.find(x => x.id === themeId);
-            document.getElementById('current-theme-btn').innerText = `${t.emoji} ${t.name}`;
-            localStorage.setItem('dcypher_theme', themeId);
-            currentTheme = themeId;
-        }
+        function seededRandom(s) { let h = 0; for(let i=0;i<s.length;i++) h = Math.imul(31,h)+s.charCodeAt(i)|0; return function() { h = Math.imul(h^h>>>15,h|1); h^=h+Math.imul(h^h>>>7,h|61); return ((h^h>>>14)>>>0)/4294967296; } }
 
-        function openThemes() {
+        // --- Rendering ---
+        function openMenu() {
             document.getElementById('theme-list').innerHTML = themeConfig.map(t => {
                 const isUnlocked = score >= t.cost || t.cost === 0;
-                const isCurrent = currentTheme === t.id;
-                return `
-                <button ${!isUnlocked ? 'disabled' : ''} onclick="applyTheme('${t.id}'); closeThemes();" 
-                    class="w-full text-left p-4 rounded-xl border ${isCurrent ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg'} 
+                return `<button ${!isUnlocked ? 'disabled' : ''} onclick="applyTheme('${t.id}'); closeMenu();" 
+                    class="w-full text-left p-4 rounded-xl border ${currentTheme === t.id ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg/50'} 
                     ${!isUnlocked ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:border-theme-primary'} flex justify-between items-center transition-all">
-                    <div>
-                        <span class="text-xl mr-2">${t.emoji}</span>
-                        <span class="font-display font-bold ${isCurrent ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span>
-                    </div>
-                    ${!isUnlocked ? `<span class="text-xs font-mono text-theme-muted font-bold">🔒 ${formatNumber(t.cost)} pts</span>` : ''}
+                    <div><span class="mr-2">${t.emoji}</span><span class="font-bold text-sm ${currentTheme === t.id ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span></div>
+                    ${!isUnlocked ? `<span class="text-xs font-mono text-theme-muted font-bold">🔒 ${score >= 1000 ? (t.cost/1000).toFixed(1)+'k' : t.cost} pts</span>` : ''}
                 </button>`;
             }).join('');
-            
-            document.getElementById('theme-modal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('theme-modal').classList.remove('opacity-0'), 10);
+            document.getElementById('menu-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('menu-modal').classList.remove('opacity-0'), 10);
+            toggleRobot(badRobotMode); // apply styling to toggle
         }
-
-        function closeThemes() {
-            document.getElementById('theme-modal').classList.add('opacity-0');
-            setTimeout(() => document.getElementById('theme-modal').classList.add('hidden'), 300);
-        }
+        function closeMenu() { document.getElementById('menu-modal').classList.add('opacity-0'); setTimeout(() => document.getElementById('menu-modal').classList.add('hidden'), 300); }
+        function applyTheme(id) { document.documentElement.setAttribute('data-theme', id); currentTheme = id; localStorage.setItem('dcypher_theme', id); }
 
         function render() {
             document.getElementById('target-display').innerText = target;
@@ -415,44 +429,32 @@
             const resEl = document.getElementById('live-result-display');
 
             if (expression.length === 0) {
-                eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest text-center mt-2">Deploy all 7 nodes to decrypt</span>`;
+                eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest mt-2">Deploy all 7 nodes</span>`;
                 resEl.innerHTML = "";
             } else {
-                eqEl.innerHTML = expression.map(item => {
-                    if (item.type === 'num') return `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg">${item.value}</span>`;
-                    return `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`;
-                }).join('');
+                eqEl.innerHTML = expression.map(item => item.type === 'num' ? `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg">${item.value}</span>` : `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`).join('');
             }
 
-            const numCount = expression.filter(item => item.type === 'num').length;
-
             if (expression.length > 0 && expression[expression.length - 1].type === 'num') {
-                const evalString = expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' ');
                 try {
-                    const result = new Function('return ' + evalString)();
+                    const result = new Function('return ' + expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' '))();
                     if (result % 1 !== 0) {
                         resEl.innerHTML = `<span class="text-red-500 text-xl font-sans font-bold uppercase tracking-widest">Data Fractured</span>`;
-                    } else {
-                        resEl.innerHTML = `<span class="text-theme-muted mr-2 text-xl font-sans">=</span> ${result}`;
-                        if (result === target && numCount === 7 && !isRoundOver) handleExactMatch();
-                    }
+                        // Subtle robot trigger if decimals happen
+                        if (badRobotMode && Math.random() > 0.7) speakRobot('decimals'); 
+                    } else resEl.innerHTML = `<span class="text-theme-muted mr-2 text-xl font-sans">=</span> ${result}`;
                 } catch (e) { resEl.innerHTML = ""; }
             } else resEl.innerHTML = ""; 
 
             const createNumBtn = (num, i) => {
                 const isUsed = expression.some(item => item.type === 'num' && item.index === i);
-                const baseClass = "btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full transition-all ";
-                if (isUsed || isRoundOver) return `<button disabled class="${baseClass} border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed">${num}</button>`;
-                return `<button onclick="handleNumberClick(${num}, ${i})" class="${baseClass} bg-theme-card border border-theme-border text-theme-text shadow-sm">${num}</button>`;
+                if (isUsed || isRoundOver || hasFailedDaily) return `<button disabled class="font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full transition-all border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed">${num}</button>`;
+                return `<button onclick="handleNumberClick(${num}, ${i})" class="btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full bg-theme-card border border-theme-border text-theme-text shadow-sm">${num}</button>`;
             };
 
             document.getElementById('numbers-row-1').innerHTML = numbers.slice(0, 4).map((num, i) => createNumBtn(num, i)).join('');
             document.getElementById('numbers-row-2').innerHTML = numbers.slice(4, 7).map((num, i) => `<div class="w-[72px] sm:w-[84px]">${createNumBtn(num, i + 4)}</div>`).join('');
-
-            document.getElementById('operators-row').innerHTML = operators.map(op => {
-                return `<button onclick="handleOperatorClick('${op}')" ${isRoundOver ? 'disabled' : ''} 
-                        class="btn-press w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-2xl font-bold text-theme-text bg-theme-card border border-theme-border shadow-sm ${isRoundOver ? 'opacity-30 cursor-not-allowed' : ''}">${op}</button>`;
-            }).join('');
+            document.getElementById('operators-row').innerHTML = operators.map(op => `<button onclick="handleOperatorClick('${op}')" ${isRoundOver || hasFailedDaily ? 'disabled' : ''} class="btn-press w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-2xl font-bold text-theme-text bg-theme-card border border-theme-border shadow-sm ${isRoundOver || hasFailedDaily ? 'opacity-30 cursor-not-allowed' : ''}">${op}</button>`).join('');
         }
 
         window.onload = initApp;
