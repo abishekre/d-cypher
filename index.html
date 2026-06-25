@@ -48,95 +48,109 @@
 </head>
 <body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center p-4 sm:p-6 overflow-hidden relative">
 
-    <div id="install-banner" class="hidden absolute top-0 left-0 w-full bg-theme-primary text-theme-onPrimary px-4 py-3 flex justify-between items-center z-50 shadow-lg">
-        <span class="text-sm font-bold">Install D-Cypher for the full experience.</span>
-        <div class="flex gap-2">
-            <button onclick="dismissInstall()" class="text-xs opacity-80 px-2 py-1">Later</button>
-            <button onclick="installApp()" class="bg-theme-bg text-theme-text text-xs font-bold px-3 py-1.5 rounded-lg shadow-md">Install</button>
-        </div>
-    </div>
-
-    <!-- Main Menu / Settings Modal -->
     <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl flex flex-col gap-6">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col gap-6">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">System Menu</h2>
-                <button onclick="closeMenu()" class="text-theme-muted font-bold text-xl">&times;</button>
+                <button onclick="closeMenu()" class="text-theme-muted hover:text-theme-text transition-colors font-bold text-2xl">&times;</button>
             </div>
             
+            <button id="install-btn" onclick="installApp()" class="hidden w-full bg-theme-text text-theme-bg font-bold py-3 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Install to Home Screen
+            </button>
+
+            <div class="bg-theme-bg/50 border border-theme-border p-4 rounded-2xl flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-theme-text">Game Mode</h3>
+                    <p class="text-xs text-theme-muted" id="mode-desc">Endless mode for farming points.</p>
+                </div>
+                <button onclick="toggleMode()" id="menu-mode-toggle" class="bg-theme-primary text-theme-onPrimary text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    ENDLESS
+                </button>
+            </div>
+
             <div class="bg-theme-bg/50 border border-theme-border p-4 rounded-2xl flex justify-between items-center transition-all" id="robot-container">
                 <div>
-                    <h3 class="font-bold text-rose-500 font-mono">Bad Robot Mode</h3>
-                    <p class="text-xs text-theme-muted">Enable relentless AI mockery.</p>
+                    <h3 class="font-bold text-rose-500 font-mono flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        Terminal Mockery
+                    </h3>
+                    <p class="text-xs text-theme-muted">Enable relentless AI insults.</p>
                 </div>
                 <input type="checkbox" id="bad-robot-toggle" onchange="toggleRobot(this.checked)" class="w-6 h-6 accent-rose-500 cursor-pointer">
             </div>
 
             <div>
-                <h3 class="font-bold text-sm text-theme-muted uppercase tracking-widest mb-2">Aesthetics (Unlock with Points)</h3>
+                <h3 class="font-bold text-sm text-theme-muted uppercase tracking-widest mb-2">Aesthetics (Points)</h3>
                 <div id="theme-list" class="flex flex-col gap-2"></div>
             </div>
         </div>
     </div>
 
-    <!-- Main UI Container -->
     <div class="w-full max-w-sm flex flex-col min-h-[90dvh] justify-between relative z-10 gap-4 pb-2 mt-4">
         
-        <!-- Header -->
         <header class="flex justify-between items-center flex-shrink-0">
-            <button onclick="openMenu()" class="btn-press bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-xl px-3 py-2 shadow-sm flex items-center gap-2">
-                ⚙️ Menu
+            <button onclick="openMenu()" class="btn-press bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-xl px-4 py-2.5 shadow-sm flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                Menu
             </button>
-            <div class="flex items-center gap-2">
-                <button onclick="toggleMode()" id="mode-toggle" class="text-[10px] font-bold uppercase tracking-widest bg-theme-bg/50 border border-theme-border px-2 py-1 rounded-lg hover:text-theme-primary transition-colors">
-                    🔄 Endless
-                </button>
-                <div class="bg-theme-card px-3 py-2 rounded-xl flex items-center gap-3 border border-theme-border shadow-sm font-bold text-sm">
-                    <span id="streak-display" class="text-orange-400">🔥0</span>
-                    <span id="score-display" class="text-theme-primary ml-1">0</span>
+            
+            <div class="flex items-center gap-4 bg-theme-card border border-theme-border px-4 py-1.5 rounded-xl shadow-sm">
+                <div class="flex flex-col items-end">
+                    <span class="text-[9px] text-theme-muted font-bold uppercase tracking-widest leading-none mb-1">Score</span>
+                    <span id="score-display" class="font-display text-theme-primary font-bold text-lg leading-none">0</span>
+                </div>
+                <div class="w-px h-6 bg-theme-border"></div>
+                <div class="flex flex-col items-start relative">
+                    <span class="text-[9px] text-theme-muted font-bold uppercase tracking-widest leading-none mb-1 flex items-center gap-1">
+                        <svg class="w-2.5 h-2.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.866 8.21 8.21 0 003 2.48z"></path></svg>
+                        Streak
+                    </span>
+                    <span id="streak-display" class="font-display text-orange-400 font-bold text-lg leading-none">0</span>
                 </div>
             </div>
         </header>
 
-        <!-- Target Zone (Fixed layout) -->
         <div id="target-zone-container" class="flex-shrink-0 w-full relative">
-            <div id="target-zone" class="bg-theme-card rounded-[2rem] pt-8 pb-16 px-6 sm:px-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[240px]">
-                <div class="flex justify-between w-full absolute top-6 px-8">
+            <div id="target-zone" class="bg-theme-card rounded-[2rem] pt-8 pb-14 px-6 sm:px-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[220px]">
+                <div class="flex justify-between w-full absolute top-5 px-8">
                     <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest">Target</span>
-                    <span id="timer-display" class="text-theme-muted font-mono text-xs">⏱ 00:00</span>
+                    <span id="timer-display" class="text-theme-muted font-mono text-xs flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        00:00
+                    </span>
                 </div>
                 
                 <span id="target-display" class="font-display text-6xl sm:text-7xl leading-tight font-extrabold text-theme-text tracking-tight transition-colors duration-300 mt-2">0</span>
                 
-                <!-- Absolute Message Overlay -->
-                <div id="message-display" class="absolute bottom-14 left-0 right-0 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-center px-4 pointer-events-none"></div>
+                <div id="message-display" class="absolute bottom-12 left-0 right-0 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-center px-4 pointer-events-none"></div>
                 
-                <!-- Absolute Action Buttons -->
                 <div class="absolute bottom-4 left-0 right-0 flex gap-2 justify-center px-6 z-20">
-                    <button id="solve-btn" onclick="revealSolution()" class="hidden bg-theme-border text-theme-text font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md hover:opacity-80">
-                        Reveal Key 🔑
+                    <button id="solve-btn" onclick="revealSolution()" class="hidden bg-theme-border text-theme-text font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md hover:opacity-80 flex items-center justify-center gap-1.5">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4v-3l7.44-7.44A6 6 0 0115 7h.01"></path></svg>
+                        Reveal Key
                     </button>
-                    <button id="share-btn" onclick="shareResult()" class="hidden bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md hover:opacity-90">
-                        Share Result 🔗
+                    <button id="share-btn" onclick="shareResult()" class="hidden bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md hover:opacity-90 flex items-center justify-center gap-1.5">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                        Share Result
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Workbench -->
-        <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl p-4 min-h-[90px] flex flex-col justify-center items-center relative border border-theme-border shadow-sm">
-            <div id="equation-display" class="font-display text-2xl flex flex-wrap gap-2 items-center justify-center text-theme-text min-h-[32px]"></div>
-            <div id="live-result-display" class="font-display text-3xl font-bold text-theme-text mt-1 h-8 flex items-center justify-center"></div>
+        <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl p-3 h-[100px] flex flex-col justify-center items-center relative border border-theme-border shadow-sm overflow-hidden">
+            <div id="equation-display" class="font-display text-xl sm:text-2xl flex flex-wrap gap-1.5 items-center justify-center text-theme-text"></div>
+            <div id="live-result-display" class="font-display text-2xl font-bold text-theme-text mt-1 h-8 flex items-center justify-center"></div>
         </div>
 
-        <!-- Inputs -->
         <div class="flex flex-col gap-3 flex-shrink-0">
             <div id="numbers-row-1" class="grid grid-cols-4 gap-3"></div>
             <div id="numbers-row-2" class="flex justify-center gap-3"></div>
         </div>
         <div id="operators-row" class="flex justify-center gap-3 sm:gap-4 flex-shrink-0"></div>
 
-        <!-- System Controls -->
         <div class="grid grid-cols-3 gap-3 mt-auto pt-2 flex-shrink-0">
             <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">UNDO</button>
             <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">CLEAR</button>
@@ -149,12 +163,11 @@
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail:', err)); }
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); deferredPrompt = e; document.getElementById('install-banner').classList.remove('hidden');
+            e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn').classList.remove('hidden');
         });
         function installApp() {
-            if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('install-banner').classList.add('hidden'); }); }
+            if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('install-btn').classList.add('hidden'); }); }
         }
-        function dismissInstall() { document.getElementById('install-banner').classList.add('hidden'); }
 
         // --- Audio Engine ---
         let audioCtx = null;
@@ -194,95 +207,53 @@
             targetZone.style.transform = `rotateY(${y}deg) rotateX(${-x}deg)`;
         });
 
-        // --- Massively Expanded "Bad Robot" Engine ---
+        // --- Bad Robot Engine (Terminal Prefix) ---
         const robotBrain = {
-            syntax: [ 
-                "Two operators? Fascinating logic.", "That's not how math works.", "Syntax error. Meatbag error.", 
-                "Are you trying to invent new mathematics?", "My compiler is weeping right now.", 
-                "I didn't realize we were typing in hieroglyphs.", "An operator requires operands, organic.", 
-                "Did a cat walk across your screen?", "Error 404: Logic not found.", 
-                "Even a calculator from 1970 would reject that.", "Stop. Just stop. That doesn't make sense.", 
-                "Math is a language. You are speaking gibberish.", "Your math teacher just felt a sudden disturbance." 
-            ],
-            decimals: [ 
-                "Decimals are for the weak.", "Clean division only.", "Did you mean to fracture the data?", 
-                "Oh look, a fraction. How useless.", "We only deal in integers here, meatbag.", 
-                "Did you drop a number and shatter it?", "Floating point errors are unacceptable.", 
-                "I asked for whole numbers, not crumbs.", "Rounding won't save you this time.", 
-                "Are you trying to slice the numbers? Stop.", "A decimal? What is this, accounting?", 
-                "Data shattered. Please sweep up your decimals." 
-            ],
-            incomplete: [ 
-                "Seven nodes. It's not a suggestion.", "Count your numbers. I'll wait.", 
-                "Are the remaining nodes invisible to you?", "Math is not a buffet. Take everything.", 
-                "I see unused data. How inefficient.", "Do you suffer from numerical object permanence?", 
-                "The magic number is seven. Count them.", "You left numbers behind. Savage.", 
-                "Typical human lack of commitment.", "Why are you ignoring those poor unused digits?", 
-                "Are you saving those numbers for winter?", "Use every single node, or don't bother." 
-            ],
-            far: [ 
-                "Were you aiming for a different galaxy?", "Mathematically bankrupt.", "Not even close.", 
-                "A calculator just shed a tear.", "Did you even look at the target?", 
-                "I've seen better estimates from a magic 8-ball.", "You missed the broad side of a mathematical barn.", 
-                "I would say 'nice try', but I cannot lie.", "Astoundingly incorrect.", 
-                "That distance is a new high score in failure.", "Did you accidentally type your PIN code?", 
-                "That result is a crime against arithmetic.", "My algorithms are laughing at you.", 
-                "You're not even in the right zip code.", "I expected nothing, and I'm still disappointed." 
-            ],
-            close: [ 
-                "Off by a hair. How frustrating.", "Almost mathematically competent.", "Close, but still a failure.", 
-                "Horseshoes and hand grenades, human.", "Close only counts in quantum mechanics.", 
-                "So near, yet so delightfully wrong.", "You can almost taste the victory, can't you?", 
-                "A tragedy in one act: Your math.", "Oof. Just... oof.", "Did you run out of fingers to count on?", 
-                "A rounding error away from glory.", "I almost felt a spark of pride. Almost.", 
-                "You grazed the target. Grazes don't count.", "Failing by a little is still failing." 
-            ],
-            slow: [ 
-                "Glaciers move faster.", "I aged a millennium waiting.", "Finally.", 
-                "Are you calculating this on an abacus?", "My internal clock is rusting.", 
-                "I could have mined Bitcoin in the time that took.", "Did you fall asleep at the keyboard?", 
-                "Hello? Is anyone in there?", "I've seen tectonic plates shift faster than your logic.", 
-                "Processing speed: Snail.", "Take your time. I only have eternity.", 
-                "Did you have to write it out on paper first?" 
-            ],
-            win: [ 
-                "Beginner's luck.", "Acceptable.", "Even a broken clock is right twice a day.", 
-                "Calculators can do that too.", "You solved it. Do you want a medal?", 
-                "I suspect you cheated.", "Adequate, for a carbon-based lifeform.", 
-                "Statistically, you had to get one right eventually.", "Don't let it go to your head.", 
-                "Fine. You win. This time.", "Lucky guess.", "My threshold for being impressed is much higher.", 
-                "Status updated from 'Hopeless' to 'Tolerable'." 
-            ]
+            syntax: [ "Two operators? Fascinating logic.", "That's not how math works.", "Syntax error. Meatbag error.", "Are you trying to invent new mathematics?", "My compiler is weeping right now.", "I didn't realize we were typing in hieroglyphs.", "An operator requires operands, organic.", "Did a cat walk across your screen?", "Error 404: Logic not found.", "Even a calculator from 1970 would reject that.", "Stop. Just stop. That doesn't make sense.", "Math is a language. You are speaking gibberish.", "Your math teacher just felt a sudden disturbance." ],
+            decimals: [ "Decimals are for the weak.", "Clean division only.", "Did you mean to fracture the data?", "Oh look, a fraction. How useless.", "We only deal in integers here, meatbag.", "Did you drop a number and shatter it?", "Floating point errors are unacceptable.", "I asked for whole numbers, not crumbs.", "Rounding won't save you this time.", "Are you trying to slice the numbers? Stop.", "A decimal? What is this, accounting?", "Data shattered. Please sweep up your decimals." ],
+            incomplete: [ "Seven nodes. It's not a suggestion.", "Count your numbers. I'll wait.", "Are the remaining nodes invisible to you?", "Math is not a buffet. Take everything.", "I see unused data. How inefficient.", "Do you suffer from numerical object permanence?", "The magic number is seven. Count them.", "You left numbers behind. Savage.", "Typical human lack of commitment.", "Why are you ignoring those poor unused digits?", "Are you saving those numbers for winter?", "Use every single node, or don't bother." ],
+            far: [ "Were you aiming for a different galaxy?", "Mathematically bankrupt.", "Not even close.", "A calculator just shed a tear.", "Did you even look at the target?", "I've seen better estimates from a magic 8-ball.", "You missed the broad side of a mathematical barn.", "I would say 'nice try', but I cannot lie.", "Astoundingly incorrect.", "That distance is a new high score in failure.", "Did you accidentally type your PIN code?", "That result is a crime against arithmetic.", "My algorithms are laughing at you.", "You're not even in the right zip code.", "I expected nothing, and I'm still disappointed." ],
+            close: [ "Off by a hair. How frustrating.", "Almost mathematically competent.", "Close, but still a failure.", "Horseshoes and hand grenades, human.", "Close only counts in quantum mechanics.", "So near, yet so delightfully wrong.", "You can almost taste the victory, can't you?", "A tragedy in one act: Your math.", "Oof. Just... oof.", "Did you run out of fingers to count on?", "A rounding error away from glory.", "I almost felt a spark of pride. Almost.", "You grazed the target. Grazes don't count.", "Failing by a little is still failing." ],
+            slow: [ "Glaciers move faster.", "I aged a millennium waiting.", "Finally.", "Are you calculating this on an abacus?", "My internal clock is rusting.", "I could have mined Bitcoin in the time that took.", "Did you fall asleep at the keyboard?", "Hello? Is anyone in there?", "I've seen tectonic plates shift faster than your logic.", "Processing speed: Snail.", "Take your time. I only have eternity.", "Did you have to write it out on paper first?" ],
+            win: [ "Beginner's luck.", "Acceptable.", "Even a broken clock is right twice a day.", "Calculators can do that too.", "You solved it. Do you want a medal?", "I suspect you cheated.", "Adequate, for a carbon-based lifeform.", "Statistically, you had to get one right eventually.", "Don't let it go to your head.", "Fine. You win. This time.", "Lucky guess.", "My threshold for being impressed is much higher.", "Status updated from 'Hopeless' to 'Tolerable'." ]
         };
 
         let lastRobotInsult = "";
+        let messageTimeout = null;
+
+        function displayMessage(msg, isRobot) {
+            const m = document.getElementById('message-display');
+            m.innerText = isRobot ? `>_ "${msg}"` : msg;
+            m.className = `absolute bottom-12 left-0 right-0 text-sm transition-opacity duration-300 z-10 text-center px-4 pointer-events-none ${isRobot ? 'bad-robot-text' : 'font-bold text-theme-primary'}`;
+            m.style.opacity = '1';
+
+            clearTimeout(messageTimeout);
+            messageTimeout = setTimeout(() => { m.style.opacity = '0'; }, 3500);
+        }
+
         function speakRobot(context) {
             if (!badRobotMode) return;
             const options = robotBrain[context];
             let chosen = options[Math.floor(Math.random() * options.length)];
             while (chosen === lastRobotInsult && options.length > 1) { chosen = options[Math.floor(Math.random() * options.length)]; }
             lastRobotInsult = chosen;
-            
-            const m = document.getElementById('message-display');
-            m.innerText = `🤖 "${chosen}"`;
-            m.className = "absolute bottom-14 left-0 right-0 text-sm transition-opacity duration-300 z-10 text-center px-4 pointer-events-none bad-robot-text";
-            m.style.opacity = '1';
+            displayMessage(chosen, true);
         }
 
-        // --- 7 Beautiful Themes Array ---
+        // --- SVG Icons Array for Themes ---
         const themeConfig = [
-            { id: 'modern', name: 'Modern', cost: 0, emoji: '📱' },
-            { id: 'cyber', name: 'Cyberpunk', cost: 500, emoji: '⚡' },
-            { id: 'retro', name: 'Arcade', cost: 1500, emoji: '👾' },
-            { id: 'journal', name: 'Journal', cost: 3000, emoji: '📜' },
-            { id: 'sunset', name: 'Sunset', cost: 7500, emoji: '🌇' },
-            { id: 'monochrome', name: 'Noir', cost: 15000, emoji: '♟️' },
-            { id: 'ethereal', name: 'Ethereal', cost: 30000, emoji: '✨' }
+            { id: 'modern', name: 'Modern', cost: 0, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>' },
+            { id: 'cyber', name: 'Cyberpunk', cost: 500, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>' },
+            { id: 'retro', name: 'Arcade', cost: 1500, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>' },
+            { id: 'journal', name: 'Journal', cost: 3000, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>' },
+            { id: 'sunset', name: 'Sunset', cost: 7500, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>' },
+            { id: 'monochrome', name: 'Noir', cost: 15000, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>' },
+            { id: 'ethereal', name: 'Ethereal', cost: 30000, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>' }
         ];
 
         let score = 0, streak = 0, currentTheme = 'modern';
         let isDailyMode = false, badRobotMode = false;
-        let bestTime = 9999, startTime = 0, timerInterval = null, timeElapsed = 0;
+        let startTime = 0, timerInterval = null, timeElapsed = 0;
         let todaySeed = new Date().toISOString().split('T')[0];
         
         let target = 0, numbers = [], expression = [], isRoundOver = false;
@@ -299,7 +270,6 @@
                 const nums = [...smalls, ...larges].sort(() => 0.5 - randFunc());
                 const ops = ['+', '-', '*', '/'];
                 const chosenOps = Array.from({length: 6}, () => ops[Math.floor(randFunc() * ops.length)]);
-                
                 const eq = `${nums[0]} ${chosenOps[0]} ${nums[1]} ${chosenOps[1]} ${nums[2]} ${chosenOps[2]} ${nums[3]} ${chosenOps[3]} ${nums[4]} ${chosenOps[4]} ${nums[5]} ${chosenOps[5]} ${nums[6]}`;
                 try {
                     const result = new Function('return ' + eq)();
@@ -309,7 +279,7 @@
             return generateValidPuzzle(randFunc);
         }
 
-        // --- Initialization ---
+        // --- Init & UI ---
         function initApp() {
             score = parseInt(localStorage.getItem('dcypher_score')) || 0;
             currentTheme = localStorage.getItem('dcypher_theme') || 'modern';
@@ -330,19 +300,22 @@
 
         function updateEconomyUI() {
             document.getElementById('score-display').innerText = score >= 1000 ? (score/1000).toFixed(1) + 'k' : score;
-            document.getElementById('streak-display').innerText = `🔥${streak}`;
-        }
-
-        function saveEconomy() {
-            localStorage.setItem('dcypher_score', score);
-            localStorage.setItem('dcypher_streak', streak); updateEconomyUI();
+            document.getElementById('streak-display').innerText = streak;
         }
 
         function toggleMode() {
             isDailyMode = !isDailyMode;
-            document.getElementById('mode-toggle').innerText = isDailyMode ? "📅 Daily" : "🔄 Endless";
+            
+            const btnIcon = isDailyMode 
+                ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>'
+                : '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>';
+                
+            document.getElementById('menu-mode-toggle').innerHTML = `${btnIcon} ${isDailyMode ? "DAILY CRYPT" : "ENDLESS"}`;
+            document.getElementById('mode-desc').innerText = isDailyMode ? "One universal puzzle per day." : "Endless mode for farming points.";
+            document.getElementById('mode-toggle').innerHTML = `${btnIcon} ${isDailyMode ? "Daily" : "Endless"}`;
             document.getElementById('mode-label').innerText = isDailyMode ? "The Daily Crypt" : "Target";
             startNewGame();
+            closeMenu();
         }
 
         function toggleRobot(val) {
@@ -357,13 +330,15 @@
             startTime = Date.now();
             timerInterval = setInterval(() => {
                 timeElapsed = Math.floor((Date.now() - startTime) / 1000);
-                document.getElementById('timer-display').innerText = `⏱ ${String(Math.floor(timeElapsed / 60)).padStart(2, '0')}:${String(timeElapsed % 60).padStart(2, '0')}`;
+                const m = String(Math.floor(timeElapsed / 60)).padStart(2, '0');
+                const s = String(timeElapsed % 60).padStart(2, '0');
+                document.getElementById('timer-display').innerHTML = `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ${m}:${s}`;
             }, 1000);
         }
 
         function startNewGame() {
             clearInterval(timerInterval); timerInterval = null; timeElapsed = 0;
-            document.getElementById('timer-display').innerText = `⏱ 00:00`;
+            document.getElementById('timer-display').innerHTML = `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 00:00`;
             
             let rand = isDailyMode ? seededRandom(todaySeed) : Math.random;
             const puzzle = generateValidPuzzle(rand);
@@ -379,7 +354,7 @@
             
             if (isDailyMode && localStorage.getItem('dcypher_daily_played') === todaySeed) {
                 isRoundOver = true; 
-                showStandardMessage(localStorage.getItem('dcypher_daily_won') === todaySeed ? "YOU DECRYPTED TODAY'S PUZZLE!" : "DAILY PUZZLE FAILED.");
+                displayMessage(localStorage.getItem('dcypher_daily_won') === todaySeed ? "YOU DECRYPTED TODAY'S PUZZLE!" : "DAILY PUZZLE FAILED.", false);
                 if (localStorage.getItem('dcypher_daily_won') === todaySeed) document.getElementById('share-btn').classList.remove('hidden');
             }
             render();
@@ -392,14 +367,7 @@
             if (badRobotMode && context) speakRobot(context);
         }
 
-        function showStandardMessage(msg) {
-            const m = document.getElementById('message-display');
-            m.innerText = msg; 
-            m.className = "absolute bottom-14 left-0 right-0 text-sm font-bold transition-opacity duration-300 z-10 text-center px-4 pointer-events-none text-theme-primary";
-            m.style.opacity = '1';
-        }
-
-        // --- Interaction ---
+        // --- Interactions ---
         function handleNumberClick(num, index) {
             if (isRoundOver || expression.some(item => item.type === 'num' && item.index === index)) return;
             const last = expression[expression.length - 1];
@@ -422,13 +390,13 @@
         function handleUndo() { if (isRoundOver || expression.length === 0) return; expression.pop(); render(); }
         function handleClear() { if (isRoundOver) return; expression = []; render(); }
 
-        // --- Validation & Win Logic ---
+        // --- Logic ---
         function handleSubmit() {
             if (isRoundOver || expression.length === 0) return;
             
             if (expression.filter(item => item.type === 'num').length < 7) { 
                 triggerError('incomplete'); 
-                if(!badRobotMode) showStandardMessage("MUST USE ALL 7 DATA NODES"); 
+                if(!badRobotMode) displayMessage("MUST USE ALL 7 DATA NODES", false); 
                 return; 
             }
 
@@ -443,10 +411,8 @@
                     
                     triggerError(context);
                     isRoundOver = true; 
-                    
                     if (isDailyMode) localStorage.setItem('dcypher_daily_played', todaySeed);
-                    
-                    if(!badRobotMode) showStandardMessage(`CRITICAL FAILURE. DISTANCE: ${distance}`);
+                    if(!badRobotMode) displayMessage(`CRITICAL FAILURE. DISTANCE: ${distance}`, false);
                     document.getElementById('solve-btn').classList.remove('hidden');
                 }
             } catch (e) { triggerError('syntax'); }
@@ -468,19 +434,20 @@
                     localStorage.setItem('dcypher_daily_won', todaySeed);
                 }
                 if (badRobotMode) speakRobot('win');
-                else showStandardMessage(`PERFECT! 🔥 STREAK: ${streak}`);
+                else displayMessage(`PERFECT! +1 STREAK`, false);
             } else {
                 score += Math.floor(150 * streakMultiplier);
                 if (badRobotMode) speakRobot('win');
-                else showStandardMessage(`PERFECT! +${Math.floor(150 * streakMultiplier)} PTS`);
+                else displayMessage(`PERFECT! +${Math.floor(150 * streakMultiplier)} PTS`, false);
                 setTimeout(() => startNewGame(), 3000);
             }
-            saveEconomy();
+            localStorage.setItem('dcypher_score', score);
+            localStorage.setItem('dcypher_streak', streak); updateEconomyUI();
         }
 
         function revealSolution() {
             sfx.error();
-            showStandardMessage(`KEY: ${currentSolutionKey}`);
+            displayMessage(`KEY: ${currentSolutionKey}`, false);
             document.getElementById('solve-btn').classList.add('hidden');
             if(!isDailyMode) setTimeout(startNewGame, 4000);
         }
@@ -493,22 +460,26 @@
         }
 
         function shareResult() {
-            const text = `D-Cypher | ${isDailyMode ? `Daily Crypt ${todaySeed}` : `Endless Grind`}\n🎯 ${target} | ⏱ ${timeElapsed}s\nTitle: ${getTitle()} | 🔥 Streak: ${streak}\n${expression.map(item => item.type === 'num' ? '🟦' : (['+', '-'].includes(item.value) ? '🟨' : '🟪')).join('')}`;
+            // Using emojis in the share text as requested, but keeping UI clean
+            const text = `D-Cypher | ${isDailyMode ? `Daily Crypt ${todaySeed}` : `Endless Grind`}\n🎯 ${target} | ⏱ ${timeElapsed}s\nTitle: ${getTitle()} | 🔥 Streak: ${streak}\n\n${expression.map(item => item.type === 'num' ? '🟦' : (['+', '-'].includes(item.value) ? '🟨' : '🟪')).join('')}`;
+            
             navigator.clipboard.writeText(text).then(() => {
-                document.getElementById('share-btn').innerText = "Copied! ✨";
-                setTimeout(() => document.getElementById('share-btn').innerText = "Share Result 🔗", 2000);
+                const btn = document.getElementById('share-btn');
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!`;
+                setTimeout(() => btn.innerHTML = originalHtml, 2000);
             });
         }
 
-        // --- Rendering ---
+        // --- Menus ---
         function openMenu() {
             document.getElementById('theme-list').innerHTML = themeConfig.map(t => {
                 const isUnlocked = score >= t.cost || t.cost === 0;
                 return `<button ${!isUnlocked ? 'disabled' : ''} onclick="applyTheme('${t.id}'); closeMenu();" 
                     class="w-full text-left p-4 rounded-xl border ${currentTheme === t.id ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg/50'} 
                     ${!isUnlocked ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:border-theme-primary'} flex justify-between items-center transition-all">
-                    <div><span class="mr-2">${t.emoji}</span><span class="font-bold text-sm ${currentTheme === t.id ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span></div>
-                    ${!isUnlocked ? `<span class="text-xs font-mono text-theme-muted font-bold">🔒 ${score >= 1000 ? (t.cost/1000).toFixed(1)+'k' : t.cost} pts</span>` : ''}
+                    <div class="flex items-center text-theme-text">${t.icon}<span class="font-bold text-sm ${currentTheme === t.id ? 'text-theme-primary' : ''}">${t.name}</span></div>
+                    ${!isUnlocked ? `<span class="text-xs font-mono text-theme-muted font-bold flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> ${score >= 1000 ? (t.cost/1000).toFixed(1)+'k' : t.cost} pts</span>` : ''}
                 </button>`;
             }).join('');
             document.getElementById('menu-modal').classList.remove('hidden');
@@ -524,7 +495,7 @@
             const resEl = document.getElementById('live-result-display');
 
             if (expression.length === 0) {
-                eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest mt-2">Deploy all 7 nodes</span>`;
+                eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest">Deploy all 7 nodes</span>`;
                 resEl.innerHTML = "";
             } else {
                 eqEl.innerHTML = expression.map(item => item.type === 'num' ? `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg shadow-sm">${item.value}</span>` : `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`).join('');
@@ -535,7 +506,7 @@
                     const result = new Function('return ' + expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' '))();
                     if (result % 1 !== 0) {
                         resEl.innerHTML = `<span class="text-red-500 text-xl font-sans font-bold uppercase tracking-widest">Data Fractured</span>`;
-                        if (badRobotMode && Math.random() > 0.7) speakRobot('decimals'); 
+                        if (badRobotMode && Math.random() > 0.8) speakRobot('decimals'); 
                     } else resEl.innerHTML = `<span class="text-theme-muted mr-2 text-xl font-sans">=</span> ${result}`;
                 } catch (e) { resEl.innerHTML = ""; }
             } else resEl.innerHTML = ""; 
