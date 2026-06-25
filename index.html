@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>D-Cypher | Daily Math Puzzle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;800&family=Outfit:wght@600;800&family=Playfair+Display:wght@700&family=VT323&family=Righteous&family=Space+Mono&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        theme: {
+                            bg: 'var(--bg)', card: 'var(--card)', primary: 'var(--primary)',
+                            onPrimary: 'var(--on-primary)', text: 'var(--text)', muted: 'var(--muted)', 
+                            border: 'var(--border)', glow: 'var(--glow)'
+                        }
+                    },
+                    fontFamily: { sans: ['var(--font-sans)'], display: ['var(--font-display)'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- THEME DEFINITIONS (Exponentially Aesthetic) --- */
+        :root, [data-theme="modern"] { /* 0 pts */
+            --bg: #0f1117; --card: #1a1d27; --primary: #6366f1; --on-primary: #ffffff; 
+            --text: #ffffff; --muted: #9ca3af; --border: rgba(255,255,255,0.05); --glow: rgba(99,102,241,0.3);
+            --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif;
+        }
+        [data-theme="cyber"] { /* 500 pts */
+            --bg: #020617; --card: rgba(30,41,59,0.6); --primary: #22d3ee; --on-primary: #000000; 
+            --text: #ffffff; --muted: #64748b; --border: rgba(34,211,238,0.3); --glow: rgba(34,211,238,0.4);
+            --font-sans: 'Space Mono', monospace; --font-display: 'Orbitron', sans-serif;
+        }
+        [data-theme="retro"] { /* 1,500 pts */
+            --bg: #000000; --card: #000000; --primary: #39ff14; --on-primary: #000000; 
+            --text: #39ff14; --muted: #1a7a08; --border: #39ff14; --glow: rgba(57,255,20,0.5);
+            --font-sans: 'VT323', monospace; --font-display: 'VT323', monospace;
+        }
+        [data-theme="paper"] { /* 5,000 pts */
+            --bg: #f4f4f5; --card: #ffffff; --primary: #18181b; --on-primary: #ffffff; 
+            --text: #18181b; --muted: #a1a1aa; --border: rgba(0,0,0,0.1); --glow: rgba(0,0,0,0.1);
+            --font-sans: 'Inter', sans-serif; --font-display: 'Playfair Display', serif;
+        }
+        [data-theme="sunset"] { /* 15,000 pts */
+            --bg: #1a0b2e; --card: #2d1b4e; --primary: #ff007f; --on-primary: #ffffff; 
+            --text: #ffffff; --muted: #fca5a5; --border: #ff007f; --glow: rgba(255,0,127,0.5);
+            --font-sans: 'Inter', sans-serif; --font-display: 'Righteous', cursive;
+        }
+        [data-theme="ethereal"] { /* 30,000 pts */
+            --bg: #e0e7ff; --card: rgba(255,255,255,0.4); --primary: #818cf8; --on-primary: #ffffff; 
+            --text: #312e81; --muted: #6366f1; --border: rgba(255,255,255,0.8); --glow: rgba(255,255,255,0.8);
+            --font-sans: 'Inter', sans-serif; --font-display: 'Cinzel', serif;
+            backdrop-filter: blur(20px);
+        }
+        [data-theme="void"] { /* 75,000 pts */
+            --bg: #000000; --card: #050505; --primary: #ffffff; --on-primary: #000000; 
+            --text: #ffffff; --muted: #333333; --border: #111111; --glow: rgba(255,255,255,0.1);
+            --font-sans: 'Space Mono', monospace; --font-display: 'Inter', sans-serif;
+        }
+        [data-theme="celestial"] { /* 150,000 pts - God Tier */
+            --bg: #0b0b1a; --card: rgba(212,175,55,0.05); --primary: #d4af37; --on-primary: #000000; 
+            --text: #fef0c7; --muted: #8c7326; --border: rgba(212,175,55,0.3); --glow: rgba(212,175,55,0.5);
+            --font-sans: 'Cinzel', serif; --font-display: 'Cinzel', serif;
+            background-image: radial-gradient(circle at 50% 0%, rgba(212,175,55,0.15) 0%, transparent 70%);
+        }
+
+        body { background-color: var(--bg); transition: all 0.5s ease; -webkit-tap-highlight-color: transparent; }
+        .btn-press { transition: transform 0.05s, background-color 0.2s, box-shadow 0.2s; }
+        .btn-press:active:not(:disabled) { transform: scale(0.92); }
+        .glow-effect { box-shadow: 0 0 25px var(--glow); }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+        .animate-shake { animation: shake 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center p-4 sm:p-6 overflow-x-hidden">
+
+    <div id="theme-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[80vh] overflow-y-auto">
+            <h2 class="font-display text-2xl font-bold mb-1">Aesthetics</h2>
+            <p class="text-theme-muted text-sm mb-6">Earn points to unlock new themes.</p>
+            <div id="theme-list" class="flex flex-col gap-3"></div>
+            <button onclick="closeThemes()" class="mt-6 w-full py-3 rounded-xl bg-theme-border text-theme-text font-bold uppercase tracking-widest text-sm">Close</button>
+        </div>
+    </div>
+
+    <div class="w-full max-w-sm flex flex-col min-h-[90dvh] justify-between relative z-10 gap-4 pb-2">
+        
+        <header class="flex justify-between items-center pt-2 flex-shrink-0">
+            <button onclick="openThemes()" id="current-theme-btn" class="bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-lg px-3 py-1.5 flex items-center gap-2 hover:bg-theme-border transition-colors">
+                📱 Modern
+            </button>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMode()" id="mode-toggle" class="text-xs font-bold uppercase tracking-widest text-theme-muted hover:text-theme-primary transition-colors">
+                    🔄 Endless
+                </button>
+                <div class="bg-theme-card px-4 py-1.5 rounded-full flex items-center gap-2 border border-theme-border shadow-sm">
+                    <span id="score-display" class="font-display text-theme-primary font-bold text-lg">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div id="target-zone" class="flex-shrink-0 bg-theme-card rounded-[2rem] p-6 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 border border-theme-border">
+            <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest mb-1 relative z-10">Target</span>
+            <span id="target-display" class="font-display text-6xl sm:text-7xl leading-tight font-extrabold text-theme-text tracking-tight relative z-10 transition-colors duration-300">0</span>
+            
+            <div id="message-display" class="absolute bottom-16 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-theme-primary"></div>
+            
+            <button id="share-btn" onclick="shareResult()" class="absolute bottom-4 hidden bg-theme-primary text-theme-onPrimary font-bold text-sm px-6 py-2 rounded-full z-20 shadow-lg transform active:scale-95 transition-all">
+                Share Result 🔗
+            </button>
+        </div>
+
+        <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl p-4 min-h-[90px] flex flex-col justify-center items-center relative border border-theme-border">
+            <div id="equation-display" class="font-display text-2xl flex flex-wrap gap-2 items-center justify-center text-theme-text"></div>
+            <div id="live-result-display" class="font-display text-3xl font-bold text-theme-text mt-1 h-8 flex items-center justify-center"></div>
+        </div>
+
+        <div class="flex flex-col gap-3 flex-shrink-0">
+            <div id="numbers-row-1" class="grid grid-cols-4 gap-3"></div>
+            <div id="numbers-row-2" class="flex justify-center gap-3"></div>
+        </div>
+
+        <div id="operators-row" class="flex justify-center gap-3 sm:gap-4 flex-shrink-0"></div>
+
+        <div class="grid grid-cols-3 gap-3 mt-auto pt-2 flex-shrink-0">
+            <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border flex items-center justify-center">UNDO</button>
+            <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border">CLEAR</button>
+            <button onclick="handleSubmit()" class="btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-2xl font-bold text-sm shadow-lg">CHECK</button>
+        </div>
+
+        <p class="text-center text-[10px] text-theme-muted/50 mt-2 font-mono tracking-widest uppercase">
+            Data stored locally. Clearing cache erases progress.
+        </p>
+    </div>
+
+    <script>
+        // --- 1. Audio & Haptics Engine ---
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+        document.body.addEventListener('touchstart', initAudio, {once: true});
+        document.body.addEventListener('click', initAudio, {once: true});
+
+        function playTone(freq, type, duration, vol=0.05) {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        const sfx = {
+            tap: () => { playTone(600, 'sine', 0.1); if(navigator.vibrate) navigator.vibrate(10); },
+            op: () => { playTone(400, 'triangle', 0.1); if(navigator.vibrate) navigator.vibrate(15); },
+            error: () => { playTone(150, 'sawtooth', 0.2, 0.1); if(navigator.vibrate) navigator.vibrate([30, 50, 30]); },
+            win: () => { 
+                playTone(523.25, 'sine', 0.1); setTimeout(()=>playTone(659.25, 'sine', 0.2), 100); setTimeout(()=>playTone(783.99, 'sine', 0.4), 200); 
+                if(navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 150]);
+            }
+        };
+
+        // --- 2. Theme & Progression Data ---
+        const themeConfig = [
+            { id: 'modern', name: 'Modern', cost: 0, emoji: '📱' },
+            { id: 'cyber', name: 'Cyberpunk', cost: 500, emoji: '⚡' },
+            { id: 'retro', name: 'Arcade', cost: 1500, emoji: '👾' },
+            { id: 'paper', name: 'Paper', cost: 5000, emoji: '📜' },
+            { id: 'sunset', name: 'Synthwave', cost: 15000, emoji: '🌇' },
+            { id: 'ethereal', name: 'Ethereal', cost: 30000, emoji: '✨' },
+            { id: 'void', name: 'The Void', cost: 75000, emoji: '🕳️' },
+            { id: 'celestial', name: 'God Tier', cost: 150000, emoji: '🌌' }
+        ];
+
+        let score = 0;
+        let currentTheme = 'modern';
+        let isDailyMode = false;
+        
+        // Game State
+        let target = 0;
+        let numbers = [];
+        let expression = []; 
+        let isRoundOver = false;
+        let todaySeed = new Date().toDateString();
+
+        // Seeded RNG for Daily Mode
+        function seededRandom(seedStr) {
+            let h = 0;
+            for(let i = 0; i < seedStr.length; i++) h = Math.imul(31, h) + seedStr.charCodeAt(i) | 0;
+            return function() {
+                h = Math.imul(h ^ h >>> 15, h | 1);
+                h ^= h + Math.imul(h ^ h >>> 7, h | 61);
+                return ((h ^ h >>> 14) >>> 0) / 4294967296;
+            }
+        }
+
+        const operators = ['+', '-', '×', '÷'];
+        const opMap = { '+': '+', '-': '-', '×': '*', '÷': '/' };
+
+        // --- 3. Core Logic ---
+        function initApp() {
+            score = parseInt(localStorage.getItem('dcypher_score')) || 0;
+            currentTheme = localStorage.getItem('dcypher_theme') || 'modern';
+            
+            document.getElementById('score-display').innerText = formatNumber(score);
+            applyTheme(currentTheme);
+            startNewGame();
+        }
+
+        function formatNumber(num) {
+            return num >= 1000 ? (num/1000).toFixed(1) + 'k' : num;
+        }
+
+        function toggleMode() {
+            isDailyMode = !isDailyMode;
+            document.getElementById('mode-toggle').innerText = isDailyMode ? "📅 Daily" : "🔄 Endless";
+            document.getElementById('mode-label').innerText = isDailyMode ? "The Daily Crypt" : "Target";
+            startNewGame();
+        }
+
+        function startNewGame() {
+            let rand = isDailyMode ? seededRandom(todaySeed) : Math.random;
+            
+            const smalls = Array.from({length: 5}, () => Math.floor(rand() * 10) + 1);
+            const larges = [25, 50, 75, 100].sort(() => 0.5 - rand()).slice(0, 2);
+            numbers = [...smalls, ...larges].sort(() => 0.5 - rand());
+            target = Math.floor(rand() * 900) + 100;
+            
+            expression = [];
+            isRoundOver = false;
+            
+            document.getElementById('message-display').style.opacity = '0';
+            document.getElementById('share-btn').classList.add('hidden');
+            document.getElementById('target-zone').classList.remove('glow-effect', 'border-theme-primary');
+            
+            // Check if they already beat today's daily
+            if (isDailyMode && localStorage.getItem('dcypher_daily') === todaySeed) {
+                isRoundOver = true;
+                showMessage("YOU DECRYPTED TODAY'S PUZZLE!");
+                document.getElementById('share-btn').classList.remove('hidden');
+            }
+            
+            render();
+        }
+
+        // --- 4. Interactions ---
+        function handleNumberClick(num, index) {
+            if (isRoundOver || expression.some(item => item.type === 'num' && item.index === index)) return;
+            const lastItem = expression[expression.length - 1];
+            if (!lastItem || lastItem.type === 'op') {
+                sfx.tap();
+                expression.push({ type: 'num', value: num, index: index });
+                render();
+            } else triggerError();
+        }
+
+        function handleOperatorClick(op) {
+            if (isRoundOver) return;
+            const lastItem = expression[expression.length - 1];
+            if (lastItem && lastItem.type === 'num') {
+                sfx.op();
+                expression.push({ type: 'op', value: op });
+                render();
+            } else triggerError();
+        }
+
+        function handleUndo() {
+            if (isRoundOver || expression.length === 0) return;
+            sfx.tap();
+            expression.pop();
+            render();
+        }
+
+        function handleClear() {
+            if (isRoundOver) return;
+            sfx.error();
+            expression = [];
+            render();
+        }
+
+        function triggerError() {
+            sfx.error();
+            const wb = document.getElementById('workbench');
+            wb.classList.remove('animate-shake');
+            void wb.offsetWidth; 
+            wb.classList.add('animate-shake');
+        }
+
+        function showMessage(msg) {
+            const m = document.getElementById('message-display');
+            m.innerText = msg;
+            m.style.opacity = '1';
+        }
+
+        function handleExactMatch() {
+            isRoundOver = true;
+            sfx.win();
+            showMessage("PERFECT DECRYPTION!");
+            
+            document.getElementById('target-zone').classList.add('glow-effect', 'border-theme-primary');
+            document.getElementById('share-btn').classList.remove('hidden');
+
+            if (isDailyMode) {
+                localStorage.setItem('dcypher_daily', todaySeed);
+            } else {
+                score += 150; // High reward for exact match forcing 7 numbers
+                localStorage.setItem('dcypher_score', score);
+                document.getElementById('score-display').innerText = formatNumber(score);
+                setTimeout(() => startNewGame(), 2500);
+            }
+        }
+
+        function handleSubmit() {
+            if (isRoundOver || expression.length === 0) return;
+
+            const numCount = expression.filter(item => item.type === 'num').length;
+            if (numCount < 7) {
+                triggerError();
+                showMessage("MUST USE ALL 7 DATA NODES");
+                return;
+            }
+
+            const evalString = expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' ');
+            try {
+                const result = new Function('return ' + evalString)();
+                if (result !== target) {
+                    triggerError();
+                    showMessage(`INCORRECT. DISTANCE: ${Math.abs(result - target)}`);
+                }
+            } catch (e) { triggerError(); }
+        }
+
+        // --- 5. Flex Sharing ---
+        function shareResult() {
+            const activeThemeObj = themeConfig.find(t => t.id === currentTheme);
+            const modeText = isDailyMode ? `Daily Crypt ${new Date().toLocaleDateString()}` : `Endless Grind`;
+            
+            // Build the sequence map visually
+            let sequenceStr = expression.map(item => {
+                if (item.type === 'num') return '🟦';
+                if (['+', '-'].includes(item.value)) return '🟨';
+                return '🟪'; // multiply/divide
+            }).join('');
+
+            const shareText = `D-Cypher | ${modeText}\n🎯 ${target} Decrypted\n${sequenceStr}\n${activeThemeObj.emoji} Aesthetic: ${activeThemeObj.name}`;
+            
+            navigator.clipboard.writeText(shareText).then(() => {
+                const btn = document.getElementById('share-btn');
+                btn.innerText = "Copied to Clipboard! ✨";
+                setTimeout(() => btn.innerText = "Share Result 🔗", 2000);
+            });
+        }
+
+        // --- 6. Theming Engine ---
+        function applyTheme(themeId) {
+            document.documentElement.setAttribute('data-theme', themeId);
+            const t = themeConfig.find(x => x.id === themeId);
+            document.getElementById('current-theme-btn').innerText = `${t.emoji} ${t.name}`;
+            localStorage.setItem('dcypher_theme', themeId);
+            currentTheme = themeId;
+        }
+
+        function openThemes() {
+            const list = document.getElementById('theme-list');
+            list.innerHTML = themeConfig.map(t => {
+                const isUnlocked = score >= t.cost || t.cost === 0;
+                const isCurrent = currentTheme === t.id;
+                
+                return `
+                <button ${!isUnlocked ? 'disabled' : ''} onclick="applyTheme('${t.id}'); closeThemes();" 
+                    class="w-full text-left p-4 rounded-xl border ${isCurrent ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg'} 
+                    ${!isUnlocked ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:border-theme-primary transition-colors'} flex justify-between items-center">
+                    <div>
+                        <span class="text-xl mr-2">${t.emoji}</span>
+                        <span class="font-display font-bold ${isCurrent ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span>
+                    </div>
+                    ${!isUnlocked ? `<span class="text-xs font-mono text-theme-muted font-bold">🔒 ${formatNumber(t.cost)} pts</span>` : ''}
+                    ${isUnlocked && !isCurrent ? `<span class="text-xs font-bold text-theme-primary">EQUIP</span>` : ''}
+                </button>`;
+            }).join('');
+            
+            document.getElementById('theme-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('theme-modal').classList.remove('opacity-0'), 10);
+        }
+
+        function closeThemes() {
+            document.getElementById('theme-modal').classList.add('opacity-0');
+            setTimeout(() => document.getElementById('theme-modal').classList.add('hidden'), 300);
+        }
+
+        // --- 7. Rendering ---
+        function render() {
+            document.getElementById('target-display').innerText = target;
+
+            const eqEl = document.getElementById('equation-display');
+            const resEl = document.getElementById('live-result-display');
+
+            if (expression.length === 0) {
+                eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest text-center mt-2">Deploy all 7 nodes to decrypt</span>`;
+                resEl.innerHTML = "";
+            } else {
+                eqEl.innerHTML = expression.map(item => {
+                    if (item.type === 'num') return `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg">${item.value}</span>`;
+                    return `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`;
+                }).join('');
+            }
+
+            const numCount = expression.filter(item => item.type === 'num').length;
+
+            if (expression.length > 0 && expression[expression.length - 1].type === 'num') {
+                const evalString = expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' ');
+                try {
+                    const result = new Function('return ' + evalString)();
+                    if (result % 1 !== 0) {
+                        resEl.innerHTML = `<span class="text-red-500 text-xl font-sans font-bold uppercase tracking-widest">Data Fractured</span>`;
+                    } else {
+                        resEl.innerHTML = `<span class="text-theme-muted mr-2 text-xl font-sans">=</span> ${result}`;
+                        if (result === target && numCount === 7 && !isRoundOver) handleExactMatch();
+                    }
+                } catch (e) { resEl.innerHTML = ""; }
+            } else {
+                resEl.innerHTML = ""; 
+            }
+
+            const createNumBtn = (num, i) => {
+                const isUsed = expression.some(item => item.type === 'num' && item.index === i);
+                if (isUsed || isRoundOver) {
+                    return `<button disabled class="font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed w-full transition-all">${num}</button>`;
+                }
+                return `<button onclick="handleNumberClick(${num}, ${i})" class="btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold bg-theme-card border border-theme-border text-theme-text shadow-sm w-full glow-hover">${num}</button>`;
+            };
+
+            document.getElementById('numbers-row-1').innerHTML = numbers.slice(0, 4).map((num, i) => createNumBtn(num, i)).join('');
+            document.getElementById('numbers-row-2').innerHTML = numbers.slice(4, 7).map((num, i) => `<div class="w-[72px] sm:w-[84px]">${createNumBtn(num, i + 4)}</div>`).join('');
+
+            document.getElementById('operators-row').innerHTML = operators.map(op => {
+                return `<button onclick="handleOperatorClick('${op}')" ${isRoundOver ? 'disabled' : ''} 
+                        class="btn-press w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-2xl font-bold text-theme-text bg-theme-card border border-theme-border shadow-sm ${isRoundOver ? 'opacity-30 cursor-not-allowed' : ''}">${op}</button>`;
+            }).join('');
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
