@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="icon.svg">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@500;800&family=Outfit:wght@600;800&family=Playfair+Display:wght@700&family=VT323&family=Righteous&family=Space+Mono&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@500;800&family=Outfit:wght@600;800&family=Playfair+Display:wght@700&family=VT323&family=Righteous&family=Space+Mono&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -28,17 +28,22 @@
     <style>
         :root, [data-theme="modern"] { --bg: #0f1117; --card: #1a1d27; --primary: #6366f1; --on-primary: #ffffff; --text: #ffffff; --muted: #9ca3af; --border: rgba(255,255,255,0.05); --glow: rgba(99,102,241,0.3); --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif; }
         [data-theme="cyber"] { --bg: #020617; --card: rgba(30,41,59,0.6); --primary: #22d3ee; --on-primary: #000000; --text: #ffffff; --muted: #64748b; --border: rgba(34,211,238,0.3); --glow: rgba(34,211,238,0.4); --font-sans: 'Space Mono', monospace; --font-display: 'Orbitron', sans-serif; }
-        [data-theme="retro"] { --bg: #000000; --card: #000000; --primary: #39ff14; --on-primary: #000000; --text: #39ff14; --muted: #1a7a08; --border: #39ff14; --glow: rgba(57,255,20,0.5); --font-sans: 'VT323', monospace; --font-display: 'VT323', monospace; }
+        [data-theme="retro"] { --bg: #000000; --card: #000000; --primary: #39ff14; --on-primary: #000000; --text: #39ff14; --muted: #1a7a08; --border: #39ff14; --glow: rgba(57,255,20,0.4); --font-sans: 'VT323', monospace; --font-display: 'VT323', monospace; }
+        [data-theme="journal"] { --bg: #f4f4f5; --card: #ffffff; --primary: #18181b; --on-primary: #ffffff; --text: #18181b; --muted: #71717a; --border: rgba(0,0,0,0.1); --glow: rgba(0,0,0,0.15); --font-sans: 'Inter', sans-serif; --font-display: 'Playfair Display', serif; }
+        [data-theme="sunset"] { --bg: #1a0b2e; --card: #2d1b4e; --primary: #ff007f; --on-primary: #ffffff; --text: #ffffff; --muted: #fca5a5; --border: rgba(255,0,127,0.4); --glow: rgba(255,0,127,0.4); --font-sans: 'Inter', sans-serif; --font-display: 'Righteous', cursive; }
+        [data-theme="monochrome"] { --bg: #000000; --card: #111111; --primary: #ffffff; --on-primary: #000000; --text: #ffffff; --muted: #666666; --border: #333333; --glow: rgba(255,255,255,0.2); --font-sans: 'Space Mono', monospace; --font-display: 'Inter', sans-serif; }
+        [data-theme="ethereal"] { --bg: #e0e7ff; --card: rgba(255,255,255,0.6); --primary: #4f46e5; --on-primary: #ffffff; --text: #1e1b4b; --muted: #6366f1; --border: rgba(255,255,255,0.9); --glow: rgba(79,70,229,0.2); --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif; }
         
         body { background-color: var(--bg); transition: all 0.5s ease; -webkit-tap-highlight-color: transparent; }
-        .btn-press { transition: transform 0.05s, background-color 0.2s, box-shadow 0.2s; }
+        .btn-press { transition: transform 0.05s, background-color 0.2s, box-shadow 0.2s, border-color 0.2s; }
         .btn-press:active:not(:disabled) { transform: scale(0.92); }
         .glow-effect { box-shadow: 0 0 35px var(--glow); border-color: var(--primary) !important; }
         #target-zone-container { perspective: 1000px; }
         #target-zone { transition: transform 0.1s ease-out, box-shadow 0.3s ease; will-change: transform; transform-style: preserve-3d; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
         .animate-shake { animation: shake 0.3s ease-in-out; }
-        .bad-robot-text { font-family: 'Space Mono', monospace; color: #f43f5e; text-shadow: 0 0 10px rgba(244,63,94,0.4); letter-spacing: 0.5px; }
+        
+        .bad-robot-text { font-family: 'Space Mono', monospace; color: #f43f5e; font-weight: bold; letter-spacing: 0.5px; }
     </style>
 </head>
 <body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center p-4 sm:p-6 overflow-hidden relative">
@@ -55,7 +60,7 @@
     <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl flex flex-col gap-6">
             <div class="flex justify-between items-center">
-                <h2 class="font-display text-2xl font-bold">System Menu</h2>
+                <h2 class="font-display text-2xl font-bold text-theme-text">System Menu</h2>
                 <button onclick="closeMenu()" class="text-theme-muted font-bold text-xl">&times;</button>
             </div>
             
@@ -68,7 +73,7 @@
             </div>
 
             <div>
-                <h3 class="font-bold text-sm text-theme-muted uppercase tracking-widest mb-2">Aesthetics (Buy with Points)</h3>
+                <h3 class="font-bold text-sm text-theme-muted uppercase tracking-widest mb-2">Aesthetics (Unlock with Points)</h3>
                 <div id="theme-list" class="flex flex-col gap-2"></div>
             </div>
         </div>
@@ -77,7 +82,7 @@
     <!-- Main UI Container -->
     <div class="w-full max-w-sm flex flex-col min-h-[90dvh] justify-between relative z-10 gap-4 pb-2 mt-4">
         
-        <!-- Economy Header -->
+        <!-- Header -->
         <header class="flex justify-between items-center flex-shrink-0">
             <button onclick="openMenu()" class="btn-press bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-xl px-3 py-2 shadow-sm flex items-center gap-2">
                 ⚙️ Menu
@@ -88,15 +93,14 @@
                 </button>
                 <div class="bg-theme-card px-3 py-2 rounded-xl flex items-center gap-3 border border-theme-border shadow-sm font-bold text-sm">
                     <span id="streak-display" class="text-orange-400">🔥0</span>
-                    <span id="coin-display" class="text-yellow-400">🪙0</span>
                     <span id="score-display" class="text-theme-primary ml-1">0</span>
                 </div>
             </div>
         </header>
 
-        <!-- Target Zone -->
+        <!-- Target Zone (Fixed layout) -->
         <div id="target-zone-container" class="flex-shrink-0 w-full relative">
-            <div id="target-zone" class="bg-theme-card rounded-[2rem] p-6 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[220px]">
+            <div id="target-zone" class="bg-theme-card rounded-[2rem] pt-8 pb-16 px-6 sm:px-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[240px]">
                 <div class="flex justify-between w-full absolute top-6 px-8">
                     <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest">Target</span>
                     <span id="timer-display" class="text-theme-muted font-mono text-xs">⏱ 00:00</span>
@@ -104,13 +108,15 @@
                 
                 <span id="target-display" class="font-display text-6xl sm:text-7xl leading-tight font-extrabold text-theme-text tracking-tight transition-colors duration-300 mt-2">0</span>
                 
-                <div id="message-display" class="absolute bottom-12 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-center px-4 w-full"></div>
+                <!-- Absolute Message Overlay -->
+                <div id="message-display" class="absolute bottom-14 left-0 right-0 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-center px-4 pointer-events-none"></div>
                 
-                <div class="absolute bottom-3 flex gap-2 w-full justify-center px-4 z-20">
-                    <button id="rewind-btn" onclick="buyRewind()" class="hidden bg-yellow-500 text-yellow-950 font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all shadow-md">
-                        Buy Rewind (🪙1)
+                <!-- Absolute Action Buttons -->
+                <div class="absolute bottom-4 left-0 right-0 flex gap-2 justify-center px-6 z-20">
+                    <button id="solve-btn" onclick="revealSolution()" class="hidden bg-theme-border text-theme-text font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md hover:opacity-80">
+                        Reveal Key 🔑
                     </button>
-                    <button id="share-btn" onclick="shareResult()" class="hidden bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md">
+                    <button id="share-btn" onclick="shareResult()" class="hidden bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transform active:scale-95 transition-all w-full shadow-md hover:opacity-90">
                         Share Result 🔗
                     </button>
                 </div>
@@ -119,7 +125,7 @@
 
         <!-- Workbench -->
         <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl p-4 min-h-[90px] flex flex-col justify-center items-center relative border border-theme-border shadow-sm">
-            <div id="equation-display" class="font-display text-2xl flex flex-wrap gap-2 items-center justify-center text-theme-text"></div>
+            <div id="equation-display" class="font-display text-2xl flex flex-wrap gap-2 items-center justify-center text-theme-text min-h-[32px]"></div>
             <div id="live-result-display" class="font-display text-3xl font-bold text-theme-text mt-1 h-8 flex items-center justify-center"></div>
         </div>
 
@@ -132,82 +138,180 @@
 
         <!-- System Controls -->
         <div class="grid grid-cols-3 gap-3 mt-auto pt-2 flex-shrink-0">
-            <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border">UNDO</button>
-            <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border">CLEAR</button>
-            <button onclick="handleSubmit()" class="btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-2xl font-bold text-sm shadow-lg shadow-theme-primary/20">CHECK</button>
+            <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">UNDO</button>
+            <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">CLEAR</button>
+            <button onclick="handleSubmit()" class="btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-2xl font-bold text-sm shadow-lg shadow-theme-primary/20 hover:opacity-90">CHECK</button>
         </div>
     </div>
 
     <script>
         // --- Service Worker & PWA Logic ---
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
-        }
-
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail:', err)); }
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); deferredPrompt = e;
-            document.getElementById('install-banner').classList.remove('hidden');
+            e.preventDefault(); deferredPrompt = e; document.getElementById('install-banner').classList.remove('hidden');
         });
-
         function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('install-banner').classList.add('hidden'); });
-            }
+            if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('install-banner').classList.add('hidden'); }); }
         }
         function dismissInstall() { document.getElementById('install-banner').classList.add('hidden'); }
 
-        // --- Intelligent "Bad Robot" Engine ---
+        // --- Audio Engine ---
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+        document.body.addEventListener('touchstart', initAudio, {once: true}); document.body.addEventListener('click', initAudio, {once: true});
+
+        function playTone(freq, type, duration, vol=0.05) {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        }
+
+        const sfx = {
+            tap: () => { playTone(600, 'sine', 0.1); if(navigator.vibrate) navigator.vibrate(10); },
+            op: () => { playTone(400, 'triangle', 0.1); if(navigator.vibrate) navigator.vibrate(15); },
+            error: () => { playTone(150, 'sawtooth', 0.2, 0.1); if(navigator.vibrate) navigator.vibrate([30, 50, 30]); },
+            win: () => { playTone(523.25, 'sine', 0.1); setTimeout(()=>playTone(659.25, 'sine', 0.2), 100); setTimeout(()=>playTone(783.99, 'sine', 0.4), 200); if(navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 150]); }
+        };
+
+        // --- Parallax UI ---
+        const targetZone = document.getElementById('target-zone');
+        document.addEventListener('mousemove', (e) => {
+            if(window.innerWidth < 768) return;
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25; const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            targetZone.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        window.addEventListener('deviceorientation', (e) => {
+            if(!e.beta || !e.gamma) return;
+            const x = Math.min(Math.max(e.beta - 45, -20), 20) / 1.5; const y = Math.min(Math.max(e.gamma, -20), 20) / 1.5;
+            targetZone.style.transform = `rotateY(${y}deg) rotateX(${-x}deg)`;
+        });
+
+        // --- Massively Expanded "Bad Robot" Engine ---
         const robotBrain = {
-            syntax: [ "Two operators? Fascinating logic.", "That's not how math works.", "Syntax error. Meatbag error.", "Did you skip basic arithmetic?", "Button mashing won't save you." ],
-            decimals: [ "Decimals are for the weak.", "I asked for whole numbers, not pieces.", "Clean division only. Try again.", "Did you mean to fracture the data?" ],
-            incomplete: [ "Seven nodes. It's not a suggestion.", "Leaving data on the table?", "Count your numbers. I'll wait.", "Are the remaining nodes invisible to you?" ],
-            far: [ "Were you aiming for a different galaxy?", "Mathematically bankrupt.", "Not even in the right zip code.", "A calculator just shed a tear." ],
-            close: [ "Off by a hair. How frustrating.", "Almost mathematically competent.", "Close, but still a failure.", "I've seen worse. Barely." ],
-            slow: [ "Glaciers move faster than your neurons.", "I aged a millennium waiting for that.", "Finally. Took you long enough." ],
-            win: [ "Beginner's luck.", "Acceptable. Don't let it go to your head.", "Even a broken clock is right twice a day.", "Calculators can do that too." ]
+            syntax: [ 
+                "Two operators? Fascinating logic.", "That's not how math works.", "Syntax error. Meatbag error.", 
+                "Are you trying to invent new mathematics?", "My compiler is weeping right now.", 
+                "I didn't realize we were typing in hieroglyphs.", "An operator requires operands, organic.", 
+                "Did a cat walk across your screen?", "Error 404: Logic not found.", 
+                "Even a calculator from 1970 would reject that.", "Stop. Just stop. That doesn't make sense.", 
+                "Math is a language. You are speaking gibberish.", "Your math teacher just felt a sudden disturbance." 
+            ],
+            decimals: [ 
+                "Decimals are for the weak.", "Clean division only.", "Did you mean to fracture the data?", 
+                "Oh look, a fraction. How useless.", "We only deal in integers here, meatbag.", 
+                "Did you drop a number and shatter it?", "Floating point errors are unacceptable.", 
+                "I asked for whole numbers, not crumbs.", "Rounding won't save you this time.", 
+                "Are you trying to slice the numbers? Stop.", "A decimal? What is this, accounting?", 
+                "Data shattered. Please sweep up your decimals." 
+            ],
+            incomplete: [ 
+                "Seven nodes. It's not a suggestion.", "Count your numbers. I'll wait.", 
+                "Are the remaining nodes invisible to you?", "Math is not a buffet. Take everything.", 
+                "I see unused data. How inefficient.", "Do you suffer from numerical object permanence?", 
+                "The magic number is seven. Count them.", "You left numbers behind. Savage.", 
+                "Typical human lack of commitment.", "Why are you ignoring those poor unused digits?", 
+                "Are you saving those numbers for winter?", "Use every single node, or don't bother." 
+            ],
+            far: [ 
+                "Were you aiming for a different galaxy?", "Mathematically bankrupt.", "Not even close.", 
+                "A calculator just shed a tear.", "Did you even look at the target?", 
+                "I've seen better estimates from a magic 8-ball.", "You missed the broad side of a mathematical barn.", 
+                "I would say 'nice try', but I cannot lie.", "Astoundingly incorrect.", 
+                "That distance is a new high score in failure.", "Did you accidentally type your PIN code?", 
+                "That result is a crime against arithmetic.", "My algorithms are laughing at you.", 
+                "You're not even in the right zip code.", "I expected nothing, and I'm still disappointed." 
+            ],
+            close: [ 
+                "Off by a hair. How frustrating.", "Almost mathematically competent.", "Close, but still a failure.", 
+                "Horseshoes and hand grenades, human.", "Close only counts in quantum mechanics.", 
+                "So near, yet so delightfully wrong.", "You can almost taste the victory, can't you?", 
+                "A tragedy in one act: Your math.", "Oof. Just... oof.", "Did you run out of fingers to count on?", 
+                "A rounding error away from glory.", "I almost felt a spark of pride. Almost.", 
+                "You grazed the target. Grazes don't count.", "Failing by a little is still failing." 
+            ],
+            slow: [ 
+                "Glaciers move faster.", "I aged a millennium waiting.", "Finally.", 
+                "Are you calculating this on an abacus?", "My internal clock is rusting.", 
+                "I could have mined Bitcoin in the time that took.", "Did you fall asleep at the keyboard?", 
+                "Hello? Is anyone in there?", "I've seen tectonic plates shift faster than your logic.", 
+                "Processing speed: Snail.", "Take your time. I only have eternity.", 
+                "Did you have to write it out on paper first?" 
+            ],
+            win: [ 
+                "Beginner's luck.", "Acceptable.", "Even a broken clock is right twice a day.", 
+                "Calculators can do that too.", "You solved it. Do you want a medal?", 
+                "I suspect you cheated.", "Adequate, for a carbon-based lifeform.", 
+                "Statistically, you had to get one right eventually.", "Don't let it go to your head.", 
+                "Fine. You win. This time.", "Lucky guess.", "My threshold for being impressed is much higher.", 
+                "Status updated from 'Hopeless' to 'Tolerable'." 
+            ]
         };
 
         let lastRobotInsult = "";
-
         function speakRobot(context) {
             if (!badRobotMode) return;
             const options = robotBrain[context];
             let chosen = options[Math.floor(Math.random() * options.length)];
-            
-            // Intelligent check: Never repeat the exact same insult twice in a row
-            while (chosen === lastRobotInsult && options.length > 1) {
-                chosen = options[Math.floor(Math.random() * options.length)];
-            }
-            
+            while (chosen === lastRobotInsult && options.length > 1) { chosen = options[Math.floor(Math.random() * options.length)]; }
             lastRobotInsult = chosen;
             
             const m = document.getElementById('message-display');
             m.innerText = `🤖 "${chosen}"`;
-            m.className = "absolute bottom-12 text-sm font-bold transition-opacity duration-300 z-10 text-center px-4 w-full bad-robot-text";
+            m.className = "absolute bottom-14 left-0 right-0 text-sm transition-opacity duration-300 z-10 text-center px-4 pointer-events-none bad-robot-text";
             m.style.opacity = '1';
         }
 
-        // --- Core State & Persistence ---
+        // --- 7 Beautiful Themes Array ---
         const themeConfig = [
             { id: 'modern', name: 'Modern', cost: 0, emoji: '📱' },
             { id: 'cyber', name: 'Cyberpunk', cost: 500, emoji: '⚡' },
-            { id: 'retro', name: 'Arcade', cost: 1500, emoji: '👾' }
+            { id: 'retro', name: 'Arcade', cost: 1500, emoji: '👾' },
+            { id: 'journal', name: 'Journal', cost: 3000, emoji: '📜' },
+            { id: 'sunset', name: 'Sunset', cost: 7500, emoji: '🌇' },
+            { id: 'monochrome', name: 'Noir', cost: 15000, emoji: '♟️' },
+            { id: 'ethereal', name: 'Ethereal', cost: 30000, emoji: '✨' }
         ];
 
-        let score = 0, coins = 0, streak = 0, currentTheme = 'modern';
+        let score = 0, streak = 0, currentTheme = 'modern';
         let isDailyMode = false, badRobotMode = false;
         let bestTime = 9999, startTime = 0, timerInterval = null, timeElapsed = 0;
         let todaySeed = new Date().toISOString().split('T')[0];
         
-        let target = 0, numbers = [], expression = [], isRoundOver = false, hasFailedDaily = false;
+        let target = 0, numbers = [], expression = [], isRoundOver = false;
+        let currentSolutionKey = "";
         const operators = ['+', '-', '×', '÷'];
         const opMap = { '+': '+', '-': '-', '×': '*', '÷': '/' };
 
+        function seededRandom(s) { let h = 0; for(let i=0;i<s.length;i++) h = Math.imul(31,h)+s.charCodeAt(i)|0; return function() { h = Math.imul(h^h>>>15,h|1); h^=h+Math.imul(h^h>>>7,h|61); return ((h^h>>>14)>>>0)/4294967296; } }
+
+        function generateValidPuzzle(randFunc) {
+            for(let attempts = 0; attempts < 500; attempts++) {
+                const smalls = Array.from({length: 5}, () => Math.floor(randFunc() * 10) + 1);
+                const larges = [25, 50, 75, 100].sort(() => 0.5 - randFunc()).slice(0, 2);
+                const nums = [...smalls, ...larges].sort(() => 0.5 - randFunc());
+                const ops = ['+', '-', '*', '/'];
+                const chosenOps = Array.from({length: 6}, () => ops[Math.floor(randFunc() * ops.length)]);
+                
+                const eq = `${nums[0]} ${chosenOps[0]} ${nums[1]} ${chosenOps[1]} ${nums[2]} ${chosenOps[2]} ${nums[3]} ${chosenOps[3]} ${nums[4]} ${chosenOps[4]} ${nums[5]} ${chosenOps[5]} ${nums[6]}`;
+                try {
+                    const result = new Function('return ' + eq)();
+                    if (result % 1 === 0 && result > 100 && result < 999) return { target: result, numbers: nums, solution: eq.replace(/\*/g, '×').replace(/\//g, '÷') };
+                } catch(e) {}
+            }
+            return generateValidPuzzle(randFunc);
+        }
+
+        // --- Initialization ---
         function initApp() {
             score = parseInt(localStorage.getItem('dcypher_score')) || 0;
-            coins = parseInt(localStorage.getItem('dcypher_coins')) || 0;
             currentTheme = localStorage.getItem('dcypher_theme') || 'modern';
             badRobotMode = localStorage.getItem('dcypher_robot') === 'true';
             document.getElementById('bad-robot-toggle').checked = badRobotMode;
@@ -226,12 +330,11 @@
 
         function updateEconomyUI() {
             document.getElementById('score-display').innerText = score >= 1000 ? (score/1000).toFixed(1) + 'k' : score;
-            document.getElementById('coin-display').innerText = `🪙${coins}`;
             document.getElementById('streak-display').innerText = `🔥${streak}`;
         }
 
         function saveEconomy() {
-            localStorage.setItem('dcypher_score', score); localStorage.setItem('dcypher_coins', coins);
+            localStorage.setItem('dcypher_score', score);
             localStorage.setItem('dcypher_streak', streak); updateEconomyUI();
         }
 
@@ -263,23 +366,21 @@
             document.getElementById('timer-display').innerText = `⏱ 00:00`;
             
             let rand = isDailyMode ? seededRandom(todaySeed) : Math.random;
-            for(let attempts = 0; attempts < 500; attempts++) {
-                const smalls = Array.from({length: 5}, () => Math.floor(rand() * 10) + 1);
-                const larges = [25, 50, 75, 100].sort(() => 0.5 - rand()).slice(0, 2);
-                numbers = [...smalls, ...larges].sort(() => 0.5 - rand());
-                target = Math.floor(rand() * 900) + 100; break;
-            }
+            const puzzle = generateValidPuzzle(rand);
+            numbers = puzzle.numbers;
+            target = puzzle.target;
+            currentSolutionKey = puzzle.solution;
             
-            expression = []; isRoundOver = false; hasFailedDaily = false;
+            expression = []; isRoundOver = false;
             document.getElementById('message-display').style.opacity = '0';
             document.getElementById('share-btn').classList.add('hidden');
-            document.getElementById('rewind-btn').classList.add('hidden');
+            document.getElementById('solve-btn').classList.add('hidden');
             document.getElementById('target-zone').classList.remove('glow-effect');
             
-            if (isDailyMode && localStorage.getItem('dcypher_daily') === todaySeed) {
-                isRoundOver = true; showStandardMessage("YOU DECRYPTED TODAY'S PUZZLE!");
-                document.getElementById('target-zone').classList.add('glow-effect');
-                document.getElementById('share-btn').classList.remove('hidden');
+            if (isDailyMode && localStorage.getItem('dcypher_daily_played') === todaySeed) {
+                isRoundOver = true; 
+                showStandardMessage(localStorage.getItem('dcypher_daily_won') === todaySeed ? "YOU DECRYPTED TODAY'S PUZZLE!" : "DAILY PUZZLE FAILED.");
+                if (localStorage.getItem('dcypher_daily_won') === todaySeed) document.getElementById('share-btn').classList.remove('hidden');
             }
             render();
         }
@@ -288,43 +389,42 @@
             if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
             const wb = document.getElementById('workbench');
             wb.classList.remove('animate-shake'); void wb.offsetWidth; wb.classList.add('animate-shake');
-            
             if (badRobotMode && context) speakRobot(context);
         }
 
         function showStandardMessage(msg) {
             const m = document.getElementById('message-display');
             m.innerText = msg; 
-            m.className = "absolute bottom-12 text-sm font-bold transition-opacity duration-300 z-10 text-center px-4 w-full text-theme-primary";
+            m.className = "absolute bottom-14 left-0 right-0 text-sm font-bold transition-opacity duration-300 z-10 text-center px-4 pointer-events-none text-theme-primary";
             m.style.opacity = '1';
         }
 
         // --- Interaction ---
         function handleNumberClick(num, index) {
-            if (isRoundOver || hasFailedDaily || expression.some(item => item.type === 'num' && item.index === index)) return;
+            if (isRoundOver || expression.some(item => item.type === 'num' && item.index === index)) return;
             const last = expression[expression.length - 1];
             if (!last || last.type === 'op') {
                 if(expression.length === 0) startTimer();
                 if(navigator.vibrate) navigator.vibrate(10);
                 expression.push({ type: 'num', value: num, index: index }); render();
-            } else triggerError('syntax'); // Robot knows you tried two numbers
+            } else triggerError('syntax');
         }
 
         function handleOperatorClick(op) {
-            if (isRoundOver || hasFailedDaily) return;
+            if (isRoundOver) return;
             const last = expression[expression.length - 1];
             if (last && last.type === 'num') {
                 if(navigator.vibrate) navigator.vibrate(15);
                 expression.push({ type: 'op', value: op }); render();
-            } else triggerError('syntax'); // Robot knows you tried two operators
+            } else triggerError('syntax');
         }
 
-        function handleUndo() { if (isRoundOver || hasFailedDaily || expression.length === 0) return; expression.pop(); render(); }
-        function handleClear() { if (isRoundOver || hasFailedDaily) return; expression = []; render(); }
+        function handleUndo() { if (isRoundOver || expression.length === 0) return; expression.pop(); render(); }
+        function handleClear() { if (isRoundOver) return; expression = []; render(); }
 
         // --- Validation & Win Logic ---
         function handleSubmit() {
-            if (isRoundOver || hasFailedDaily || expression.length === 0) return;
+            if (isRoundOver || expression.length === 0) return;
             
             if (expression.filter(item => item.type === 'num').length < 7) { 
                 triggerError('incomplete'); 
@@ -339,16 +439,15 @@
                 else {
                     const distance = Math.abs(result - target);
                     let context = distance > 15 ? 'far' : 'close';
-                    if (timeElapsed > 60 && Math.random() > 0.5) context = 'slow'; // Sometimes insult speed if slow
+                    if (timeElapsed > 60 && Math.random() > 0.5) context = 'slow';
                     
                     triggerError(context);
-                    if (isDailyMode) {
-                        hasFailedDaily = true;
-                        if(!badRobotMode) showStandardMessage(`CRITICAL FAILURE. DISTANCE: ${distance}`);
-                        document.getElementById('rewind-btn').classList.remove('hidden');
-                    } else {
-                        if(!badRobotMode) showStandardMessage(`INCORRECT. DISTANCE: ${distance}`);
-                    }
+                    isRoundOver = true; 
+                    
+                    if (isDailyMode) localStorage.setItem('dcypher_daily_played', todaySeed);
+                    
+                    if(!badRobotMode) showStandardMessage(`CRITICAL FAILURE. DISTANCE: ${distance}`);
+                    document.getElementById('solve-btn').classList.remove('hidden');
                 }
             } catch (e) { triggerError('syntax'); }
         }
@@ -363,13 +462,15 @@
             document.getElementById('share-btn').classList.remove('hidden');
 
             if (isDailyMode) {
-                if (localStorage.getItem('dcypher_daily') !== todaySeed) {
-                    streak++; localStorage.setItem('dcypher_lastDaily', todaySeed); localStorage.setItem('dcypher_daily', todaySeed);
+                if (localStorage.getItem('dcypher_daily_won') !== todaySeed) {
+                    streak++; localStorage.setItem('dcypher_lastDaily', todaySeed); 
+                    localStorage.setItem('dcypher_daily_played', todaySeed);
+                    localStorage.setItem('dcypher_daily_won', todaySeed);
                 }
                 if (badRobotMode) speakRobot('win');
                 else showStandardMessage(`PERFECT! 🔥 STREAK: ${streak}`);
             } else {
-                score += Math.floor(150 * streakMultiplier); coins++;
+                score += Math.floor(150 * streakMultiplier);
                 if (badRobotMode) speakRobot('win');
                 else showStandardMessage(`PERFECT! +${Math.floor(150 * streakMultiplier)} PTS`);
                 setTimeout(() => startNewGame(), 3000);
@@ -377,15 +478,11 @@
             saveEconomy();
         }
 
-        function buyRewind() {
-            if (coins >= 1) {
-                coins--; saveEconomy(); hasFailedDaily = false;
-                document.getElementById('rewind-btn').classList.add('hidden');
-                showStandardMessage("REWIND DEPLOYED. RETRYING...");
-                setTimeout(() => { expression.pop(); render(); document.getElementById('message-display').style.opacity = '0'; }, 1000);
-            } else {
-                triggerError(); showMessage(badRobotMode ? "🤖 You are mathematically AND financially broke." : "INSUFFICIENT COINS.", badRobotMode);
-            }
+        function revealSolution() {
+            sfx.error();
+            showStandardMessage(`KEY: ${currentSolutionKey}`);
+            document.getElementById('solve-btn').classList.add('hidden');
+            if(!isDailyMode) setTimeout(startNewGame, 4000);
         }
 
         function getTitle() {
@@ -403,8 +500,6 @@
             });
         }
 
-        function seededRandom(s) { let h = 0; for(let i=0;i<s.length;i++) h = Math.imul(31,h)+s.charCodeAt(i)|0; return function() { h = Math.imul(h^h>>>15,h|1); h^=h+Math.imul(h^h>>>7,h|61); return ((h^h>>>14)>>>0)/4294967296; } }
-
         // --- Rendering ---
         function openMenu() {
             document.getElementById('theme-list').innerHTML = themeConfig.map(t => {
@@ -418,7 +513,7 @@
             }).join('');
             document.getElementById('menu-modal').classList.remove('hidden');
             setTimeout(() => document.getElementById('menu-modal').classList.remove('opacity-0'), 10);
-            toggleRobot(badRobotMode); // apply styling to toggle
+            toggleRobot(badRobotMode);
         }
         function closeMenu() { document.getElementById('menu-modal').classList.add('opacity-0'); setTimeout(() => document.getElementById('menu-modal').classList.add('hidden'), 300); }
         function applyTheme(id) { document.documentElement.setAttribute('data-theme', id); currentTheme = id; localStorage.setItem('dcypher_theme', id); }
@@ -432,7 +527,7 @@
                 eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest mt-2">Deploy all 7 nodes</span>`;
                 resEl.innerHTML = "";
             } else {
-                eqEl.innerHTML = expression.map(item => item.type === 'num' ? `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg">${item.value}</span>` : `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`).join('');
+                eqEl.innerHTML = expression.map(item => item.type === 'num' ? `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg shadow-sm">${item.value}</span>` : `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`).join('');
             }
 
             if (expression.length > 0 && expression[expression.length - 1].type === 'num') {
@@ -440,7 +535,6 @@
                     const result = new Function('return ' + expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' '))();
                     if (result % 1 !== 0) {
                         resEl.innerHTML = `<span class="text-red-500 text-xl font-sans font-bold uppercase tracking-widest">Data Fractured</span>`;
-                        // Subtle robot trigger if decimals happen
                         if (badRobotMode && Math.random() > 0.7) speakRobot('decimals'); 
                     } else resEl.innerHTML = `<span class="text-theme-muted mr-2 text-xl font-sans">=</span> ${result}`;
                 } catch (e) { resEl.innerHTML = ""; }
@@ -448,13 +542,13 @@
 
             const createNumBtn = (num, i) => {
                 const isUsed = expression.some(item => item.type === 'num' && item.index === i);
-                if (isUsed || isRoundOver || hasFailedDaily) return `<button disabled class="font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full transition-all border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed">${num}</button>`;
-                return `<button onclick="handleNumberClick(${num}, ${i})" class="btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full bg-theme-card border border-theme-border text-theme-text shadow-sm">${num}</button>`;
+                if (isUsed || isRoundOver) return `<button disabled class="font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full transition-all border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed">${num}</button>`;
+                return `<button onclick="handleNumberClick(${num}, ${i})" class="btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full bg-theme-card border border-theme-border text-theme-text shadow-sm hover:border-theme-primary/50">${num}</button>`;
             };
 
             document.getElementById('numbers-row-1').innerHTML = numbers.slice(0, 4).map((num, i) => createNumBtn(num, i)).join('');
             document.getElementById('numbers-row-2').innerHTML = numbers.slice(4, 7).map((num, i) => `<div class="w-[72px] sm:w-[84px]">${createNumBtn(num, i + 4)}</div>`).join('');
-            document.getElementById('operators-row').innerHTML = operators.map(op => `<button onclick="handleOperatorClick('${op}')" ${isRoundOver || hasFailedDaily ? 'disabled' : ''} class="btn-press w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-2xl font-bold text-theme-text bg-theme-card border border-theme-border shadow-sm ${isRoundOver || hasFailedDaily ? 'opacity-30 cursor-not-allowed' : ''}">${op}</button>`).join('');
+            document.getElementById('operators-row').innerHTML = operators.map(op => `<button onclick="handleOperatorClick('${op}')" ${isRoundOver ? 'disabled' : ''} class="btn-press w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-2xl font-bold text-theme-text bg-theme-card border border-theme-border shadow-sm hover:border-theme-primary/50 ${isRoundOver ? 'opacity-30 cursor-not-allowed' : ''}">${op}</button>`).join('');
         }
 
         window.onload = initApp;
