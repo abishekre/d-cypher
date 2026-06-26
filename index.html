@@ -52,7 +52,7 @@
         <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col gap-6">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">System Menu</h2>
-                <button onclick="closeMenu()" class="text-theme-muted hover:text-theme-text transition-colors font-bold text-2xl">&times;</button>
+                <button onclick="closeMenu()" class="text-theme-muted hover:text-theme-text transition-colors font-bold text-2xl" aria-label="Close Menu">&times;</button>
             </div>
             
             <button id="install-btn" onclick="installApp()" class="hidden w-full bg-theme-text text-theme-bg font-bold py-3 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center gap-2">
@@ -151,14 +151,20 @@
         </div>
         <div id="operators-row" class="flex justify-center gap-3 sm:gap-4 flex-shrink-0"></div>
 
-        <div class="grid grid-cols-3 gap-3 mt-auto pt-2 flex-shrink-0">
-            <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">UNDO</button>
-            <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">CLEAR</button>
-            <button onclick="handleSubmit()" class="btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-2xl font-bold text-sm shadow-lg shadow-theme-primary/20 hover:opacity-90">CHECK</button>
+        <div class="grid grid-cols-4 gap-2 mt-auto pt-2 flex-shrink-0">
+            <button onclick="handleUndo()" class="btn-press bg-theme-card py-4 rounded-xl font-bold text-xs sm:text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">UNDO</button>
+            <button onclick="handleClear()" class="btn-press bg-theme-card py-4 rounded-xl font-bold text-xs sm:text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">CLEAR</button>
+            <button id="skip-btn" onclick="handleSkip()" class="btn-press bg-theme-card py-4 rounded-xl font-bold text-xs sm:text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">SKIP</button>
+            <button onclick="handleSubmit()" class="btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-theme-primary/20 hover:opacity-90">CHECK</button>
         </div>
     </div>
 
     <script>
+        // --- Date Helper ---
+        function getTodaySeed() {
+            return new Date().toISOString().split('T')[0];
+        }
+
         // --- Service Worker & PWA Logic ---
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail:', err)); }
         let deferredPrompt;
@@ -254,7 +260,6 @@
         let score = 0, streak = 0, currentTheme = 'modern';
         let isDailyMode = false, badRobotMode = false;
         let startTime = 0, timerInterval = null, timeElapsed = 0;
-        let todaySeed = new Date().toISOString().split('T')[0];
         
         let target = 0, numbers = [], expression = [], isRoundOver = false;
         let currentSolutionKey = "";
@@ -264,7 +269,7 @@
         function seededRandom(s) { let h = 0; for(let i=0;i<s.length;i++) h = Math.imul(31,h)+s.charCodeAt(i)|0; return function() { h = Math.imul(h^h>>>15,h|1); h^=h+Math.imul(h^h>>>7,h|61); return ((h^h>>>14)>>>0)/4294967296; } }
 
         function generateValidPuzzle(randFunc) {
-            for(let attempts = 0; attempts < 500; attempts++) {
+            while(true) {
                 const smalls = Array.from({length: 5}, () => Math.floor(randFunc() * 10) + 1);
                 const larges = [25, 50, 75, 100].sort(() => 0.5 - randFunc()).slice(0, 2);
                 const nums = [...smalls, ...larges].sort(() => 0.5 - randFunc());
@@ -276,7 +281,6 @@
                     if (result % 1 === 0 && result > 100 && result < 999) return { target: result, numbers: nums, solution: eq.replace(/\*/g, '×').replace(/\//g, '÷') };
                 } catch(e) {}
             }
-            return generateValidPuzzle(randFunc);
         }
 
         // --- Init & UI ---
@@ -290,6 +294,7 @@
         }
 
         function checkStreak() {
+            const todaySeed = getTodaySeed();
             const lastPlayed = localStorage.getItem('dcypher_lastDaily');
             streak = parseInt(localStorage.getItem('dcypher_streak')) || 0;
             if (lastPlayed) {
@@ -312,8 +317,8 @@
                 
             document.getElementById('menu-mode-toggle').innerHTML = `${btnIcon} ${isDailyMode ? "DAILY CRYPT" : "ENDLESS"}`;
             document.getElementById('mode-desc').innerText = isDailyMode ? "One universal puzzle per day." : "Endless mode for farming points.";
-            document.getElementById('mode-toggle').innerHTML = `${btnIcon} ${isDailyMode ? "Daily" : "Endless"}`;
             document.getElementById('mode-label').innerText = isDailyMode ? "The Daily Crypt" : "Target";
+            
             startNewGame();
             closeMenu();
         }
@@ -340,6 +345,7 @@
             clearInterval(timerInterval); timerInterval = null; timeElapsed = 0;
             document.getElementById('timer-display').innerHTML = `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 00:00`;
             
+            const todaySeed = getTodaySeed();
             let rand = isDailyMode ? seededRandom(todaySeed) : Math.random;
             const puzzle = generateValidPuzzle(rand);
             numbers = puzzle.numbers;
@@ -351,6 +357,8 @@
             document.getElementById('share-btn').classList.add('hidden');
             document.getElementById('solve-btn').classList.add('hidden');
             document.getElementById('target-zone').classList.remove('glow-effect');
+            
+            document.getElementById('skip-btn').style.display = isDailyMode ? 'none' : 'block';
             
             if (isDailyMode && localStorage.getItem('dcypher_daily_played') === todaySeed) {
                 isRoundOver = true; 
@@ -390,6 +398,18 @@
         function handleUndo() { if (isRoundOver || expression.length === 0) return; expression.pop(); render(); }
         function handleClear() { if (isRoundOver) return; expression = []; render(); }
 
+        function handleSkip() {
+            if (isRoundOver || isDailyMode) return;
+            score = Math.max(0, score - 50); 
+            localStorage.setItem('dcypher_score', score);
+            updateEconomyUI();
+            
+            if (badRobotMode) speakRobot('far'); // Generic insult for giving up
+            else displayMessage("COWARD. -50 PTS.", false); 
+            
+            setTimeout(startNewGame, 1000);
+        }
+
         // --- Logic ---
         function handleSubmit() {
             if (isRoundOver || expression.length === 0) return;
@@ -403,17 +423,18 @@
             const evalString = expression.map(item => item.type === 'op' ? opMap[item.value] : item.value).join(' ');
             try {
                 const result = new Function('return ' + evalString)();
-                if (result === target) handleExactMatch();
-                else {
+                if (result === target) {
+                    handleExactMatch();
+                } else {
                     const distance = Math.abs(result - target);
                     let context = distance > 15 ? 'far' : 'close';
                     if (timeElapsed > 60 && Math.random() > 0.5) context = 'slow';
                     
                     triggerError(context);
-                    isRoundOver = true; 
-                    if (isDailyMode) localStorage.setItem('dcypher_daily_played', todaySeed);
                     if(!badRobotMode) displayMessage(`CRITICAL FAILURE. DISTANCE: ${distance}`, false);
-                    document.getElementById('solve-btn').classList.remove('hidden');
+                    
+                    // Time penalty for wrong guess
+                    timeElapsed += 15; 
                 }
             } catch (e) { triggerError('syntax'); }
         }
@@ -423,26 +444,37 @@
             isRoundOver = true;
             if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 150]);
             
-            let streakMultiplier = 1 + (Math.min(streak, 10) * 0.1); 
             document.getElementById('target-zone').classList.add('glow-effect');
             document.getElementById('share-btn').classList.remove('hidden');
+
+            const basePoints = 100;
+            const timeBonus = Math.max(0, 200 - (timeElapsed * 2)); 
+            let totalRoundScore = basePoints + timeBonus;
+            
+            let streakMultiplier = 1 + (Math.min(streak, 10) * 0.1); 
+            let finalAward = Math.floor(totalRoundScore * streakMultiplier);
+
+            const todaySeed = getTodaySeed();
 
             if (isDailyMode) {
                 if (localStorage.getItem('dcypher_daily_won') !== todaySeed) {
                     streak++; localStorage.setItem('dcypher_lastDaily', todaySeed); 
                     localStorage.setItem('dcypher_daily_played', todaySeed);
                     localStorage.setItem('dcypher_daily_won', todaySeed);
+                    score += finalAward; 
                 }
                 if (badRobotMode) speakRobot('win');
-                else displayMessage(`PERFECT! +1 STREAK`, false);
+                else displayMessage(`PERFECT! ${timeBonus > 150 ? 'BLAZING FAST!' : '+1 STREAK'}`, false);
             } else {
-                score += Math.floor(150 * streakMultiplier);
+                score += finalAward;
                 if (badRobotMode) speakRobot('win');
-                else displayMessage(`PERFECT! +${Math.floor(150 * streakMultiplier)} PTS`, false);
+                else displayMessage(`PERFECT! +${finalAward} PTS`, false);
                 setTimeout(() => startNewGame(), 3000);
             }
+            
             localStorage.setItem('dcypher_score', score);
-            localStorage.setItem('dcypher_streak', streak); updateEconomyUI();
+            localStorage.setItem('dcypher_streak', streak); 
+            updateEconomyUI();
         }
 
         function revealSolution() {
@@ -460,7 +492,7 @@
         }
 
         function shareResult() {
-            // Using emojis in the share text as requested, but keeping UI clean
+            const todaySeed = getTodaySeed();
             const text = `D-Cypher | ${isDailyMode ? `Daily Crypt ${todaySeed}` : `Endless Grind`}\n🎯 ${target} | ⏱ ${timeElapsed}s\nTitle: ${getTitle()} | 🔥 Streak: ${streak}\n\n${expression.map(item => item.type === 'num' ? '🟦' : (['+', '-'].includes(item.value) ? '🟨' : '🟪')).join('')}`;
             
             navigator.clipboard.writeText(text).then(() => {
