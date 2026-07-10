@@ -490,6 +490,7 @@
         }
 
         function checkStreak() {
+            const todaySeed = getTodaySeed();
             const lastPlayed = localStorage.getItem('dcypher_lastDaily');
             streak = parseInt(localStorage.getItem('dcypher_streak')) || 0;
             maxStreak = parseInt(localStorage.getItem('dcypher_maxstreak')) || 0;
@@ -519,6 +520,7 @@
             document.getElementById('menu-mode-toggle').innerHTML = `${btnIcon} ${isDailyMode ? "DAILY CRYPT" : "ENDLESS"}`;
             document.getElementById('mode-desc').innerText = isDailyMode ? "One universal puzzle per day." : "Endless mode for farming points.";
             document.getElementById('mode-label').innerText = isDailyMode ? "The Daily Crypt" : "Target";
+            
             startNewGame();
             closeMenu();
         }
