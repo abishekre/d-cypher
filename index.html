@@ -33,6 +33,9 @@
         [data-theme="sunset"] { --bg: #1a0b2e; --card: #2d1b4e; --primary: #ff007f; --on-primary: #ffffff; --text: #ffffff; --muted: #fca5a5; --border: rgba(255,0,127,0.4); --glow: rgba(255,0,127,0.4); --font-sans: 'Inter', sans-serif; --font-display: 'Righteous', cursive; }
         [data-theme="monochrome"] { --bg: #000000; --card: #111111; --primary: #ffffff; --on-primary: #000000; --text: #ffffff; --muted: #666666; --border: #333333; --glow: rgba(255,255,255,0.2); --font-sans: 'Space Mono', monospace; --font-display: 'Inter', sans-serif; }
         [data-theme="ethereal"] { --bg: #e0e7ff; --card: rgba(255,255,255,0.6); --primary: #4f46e5; --on-primary: #ffffff; --text: #1e1b4b; --muted: #6366f1; --border: rgba(255,255,255,0.9); --glow: rgba(79,70,229,0.2); --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif; }
+        [data-theme="vapor"] { --bg: #1a0033; --card: rgba(255,0,255,0.08); --primary: #ff71ce; --on-primary: #10001f; --text: #ffffff; --muted: #b967ff; --border: rgba(255,113,206,0.45); --glow: rgba(1,205,254,0.5); --font-sans: 'Space Mono', monospace; --font-display: 'Righteous', cursive; }
+        [data-theme="gold"] { --bg: #0a0a0a; --card: #141210; --primary: #f5d061; --on-primary: #1a1200; --text: #f5e6c8; --muted: #9a824a; --border: rgba(245,208,97,0.35); --glow: rgba(245,208,97,0.45); --font-sans: 'Inter', sans-serif; --font-display: 'Playfair Display', serif; }
+        [data-theme="aurora"] { --bg: #041016; --card: rgba(16,54,64,0.5); --primary: #34d399; --on-primary: #04140c; --text: #ecfdf5; --muted: #5eaa90; --border: rgba(52,211,153,0.35); --glow: rgba(52,211,153,0.45); --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif; }
 
         /* Honour the iOS safe area (Dynamic Island / notch / home indicator).
            Uses env() insets with sensible minimums; insets are 0 on other platforms. */
@@ -84,6 +87,65 @@
         }
         .modal-overlay.hidden { display: none; }
 
+        /* ===== Signature theme backgrounds (decorative, behind everything) ===== */
+        #bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; transition: opacity 0.5s ease; }
+        #bg-fx::before, #bg-fx::after { content: ''; position: absolute; inset: -20%; }
+
+        [data-theme="modern"] #bg-fx { background: radial-gradient(circle at 50% -10%, rgba(99,102,241,0.18), transparent 55%); }
+
+        [data-theme="cyber"] #bg-fx { background: radial-gradient(circle at 15% 8%, rgba(34,211,238,0.20), transparent 42%), radial-gradient(circle at 88% 92%, rgba(168,85,247,0.18), transparent 45%); }
+        [data-theme="cyber"] #bg-fx::before { background-image: linear-gradient(rgba(34,211,238,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.07) 1px, transparent 1px); background-size: 42px 42px; -webkit-mask-image: radial-gradient(circle at 50% 0%, #000, transparent 75%); mask-image: radial-gradient(circle at 50% 0%, #000, transparent 75%); }
+
+        [data-theme="retro"] #bg-fx { background: radial-gradient(circle at 50% 30%, rgba(57,255,20,0.10), transparent 60%); }
+        [data-theme="retro"] #bg-fx::after { inset: 0; background: repeating-linear-gradient(0deg, rgba(57,255,20,0.07) 0 2px, transparent 2px 4px); }
+
+        [data-theme="journal"] #bg-fx { background: radial-gradient(circle at 100% 0%, rgba(0,0,0,0.04), transparent 45%); }
+        [data-theme="monochrome"] #bg-fx { background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.07), transparent 60%); }
+
+        [data-theme="sunset"] #bg-fx { background: linear-gradient(-45deg, rgba(255,0,127,0.28), rgba(124,58,237,0.28), rgba(245,158,11,0.26), rgba(255,0,127,0.28)); background-size: 400% 400%; animation: sunset-flow 20s ease infinite; }
+        @keyframes sunset-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        [data-theme="ethereal"] #bg-fx::before { background: radial-gradient(circle at 20% 25%, rgba(129,140,248,0.55), transparent 40%), radial-gradient(circle at 82% 30%, rgba(196,181,253,0.55), transparent 42%), radial-gradient(circle at 50% 85%, rgba(147,197,253,0.55), transparent 45%); animation: aurora-drift 16s ease-in-out infinite alternate; }
+
+        [data-theme="aurora"] #bg-fx::before { background: radial-gradient(circle at 25% 20%, rgba(52,211,153,0.45), transparent 42%), radial-gradient(circle at 80% 35%, rgba(45,212,191,0.4), transparent 42%), radial-gradient(circle at 55% 90%, rgba(96,165,250,0.4), transparent 45%); animation: aurora-drift 14s ease-in-out infinite alternate; }
+        @keyframes aurora-drift { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(0,-6%,0) scale(1.12); } }
+
+        [data-theme="vapor"] #bg-fx { background: linear-gradient(0deg, rgba(255,113,206,0.18), transparent 55%), radial-gradient(circle at 50% 118%, rgba(1,205,254,0.30), transparent 48%); }
+        [data-theme="vapor"] #bg-fx::after { top: 62%; inset-inline: -20%; bottom: -20%; background-image: linear-gradient(rgba(1,205,254,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(1,205,254,0.25) 1px, transparent 1px); background-size: 44px 44px; transform: perspective(320px) rotateX(62deg); transform-origin: center top; }
+
+        [data-theme="gold"] #bg-fx { background: radial-gradient(circle at 50% 0%, rgba(245,208,97,0.14), transparent 60%), radial-gradient(circle at 50% 100%, rgba(245,208,97,0.06), transparent 55%); }
+
+        @media (prefers-reduced-motion: reduce) { #bg-fx, #bg-fx::before, #bg-fx::after { animation: none !important; } }
+
+        /* Result-action buttons (Reveal / Share / Next / Ranks) */
+        .res-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0.7rem 0.5rem; border-radius: 0.85rem; font-weight: 700; font-size: 0.78rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.05s, opacity 0.2s, border-color 0.2s; }
+        .res-btn:active { transform: scale(0.95); }
+
+        /* Responsive fit: shrink the big elements on shorter screens so the
+           number pad and CHECK/UNDO/CLEAR are always fully visible. */
+        @media (max-height: 800px) {
+            #target-zone { min-height: 164px; padding-top: 2.25rem; }
+            #target-display { font-size: 3.5rem; }
+            #workbench { min-height: 82px; }
+        }
+        @media (max-height: 720px) {
+            #target-zone { min-height: 148px; padding-top: 2rem; padding-bottom: 1.25rem; }
+            #target-display { font-size: 3rem; }
+            #message-display { min-height: 2rem !important; margin-top: 0.4rem !important; }
+            #workbench { min-height: 74px; }
+            .pad-btn { padding-top: 0.65rem !important; padding-bottom: 0.65rem !important; font-size: 1.4rem !important; }
+            #operators-row button { width: 3rem !important; height: 3rem !important; font-size: 1.4rem !important; }
+            .action-btn { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; }
+            .res-btn { padding-top: 0.55rem; padding-bottom: 0.55rem; }
+        }
+        @media (max-height: 640px) {
+            #target-zone { min-height: 126px; padding-top: 1.75rem; }
+            #target-display { font-size: 2.6rem; }
+            #workbench { min-height: 66px; }
+            .pad-btn { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; font-size: 1.25rem !important; }
+            #operators-row button { width: 2.75rem !important; height: 2.75rem !important; }
+        }
+
         .section-label { font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
@@ -91,14 +153,15 @@
         .chev { transition: transform 0.2s ease; }
     </style>
 </head>
-<body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center overflow-hidden relative">
+<body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center overflow-y-auto relative">
 
+    <div id="bg-fx"></div>
     <div id="confetti-layer"></div>
     <div id="toast-layer"></div>
 
     <!-- ============ SYSTEM MENU ============ -->
-    <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300 flex">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-5 w-full max-w-sm max-h-[88vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
+    <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden modal-overlay opacity-0 transition-opacity duration-300 flex">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-5 w-full max-w-sm max-h-full overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">Menu</h2>
                 <button onclick="closeMenu()" aria-label="Close menu" class="text-theme-muted hover:text-theme-text transition-colors font-bold text-2xl leading-none">&times;</button>
@@ -211,7 +274,7 @@
 
     <!-- ============ STATS MODAL ============ -->
     <div id="stats-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center flex p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-5">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-full overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-5">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">Statistics</h2>
                 <button onclick="closeModal('stats-modal')" aria-label="Close" class="text-theme-muted hover:text-theme-text font-bold text-2xl">&times;</button>
@@ -245,7 +308,7 @@
 
     <!-- ============ LEADERBOARD MODAL ============ -->
     <div id="lb-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-centerflex p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-full overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">Leaderboard</h2>
                 <button onclick="closeModal('lb-modal')" aria-label="Close" class="text-theme-muted hover:text-theme-text font-bold text-2xl">&times;</button>
@@ -262,7 +325,7 @@
 
     <!-- ============ TUTORIAL MODAL ============ -->
     <div id="tutorial-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center flex justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm shadow-2xl flex flex-col gap-4">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-full overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
             <h2 class="font-display text-2xl font-bold text-theme-text">How to Play</h2>
             <div class="flex flex-col gap-3 text-sm text-theme-text">
                 <div class="flex gap-3 items-start"><span class="text-theme-primary font-bold">1.</span><p>Hit the <b>target number</b> at the top by combining numbers and operators.</p></div>
@@ -276,7 +339,7 @@
     </div>
 
     <!-- ============ MAIN ============ -->
-    <div class="w-full max-w-sm flex flex-col min-h-[90dvh] justify-between relative z-10 gap-4 pb-2 mt-4">
+    <div class="w-full max-w-sm flex flex-col flex-1 min-h-0 justify-between relative z-10 gap-3 pb-1 mt-2">
 
         <header class="flex justify-between items-center flex-shrink-0">
             <button onclick="openMenu()" aria-label="Open menu" class="btn-press bg-theme-card border border-theme-border text-theme-text font-display text-sm font-bold rounded-xl px-4 py-2.5 shadow-sm flex items-center gap-2">
@@ -301,8 +364,8 @@
         </header>
 
         <div id="target-zone-container" class="flex-shrink-0 w-full relative">
-            <div id="target-zone" class="flex bg-theme-card rounded-[2rem] pt-8 pb-14 px-6 sm:px-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[220px]">
-                <div class="flex justify-between w-full absolute top-5 px-8">
+            <div id="target-zone" class="bg-theme-card rounded-[2rem] pt-10 pb-6 px-5 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[186px]">
+                <div class="flex justify-between w-full absolute top-4 left-0 px-6">
                     <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest">Target</span>
                     <span id="timer-display" class="text-theme-muted font-mono text-xs flex items-center gap-1">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -310,35 +373,37 @@
                     </span>
                 </div>
 
-                <span id="target-display" class="font-display text-6xl sm:text-7xl leading-tight font-extrabold text-theme-text tracking-tight transition-colors duration-300 mt-2">0</span>
+                <span id="target-display" class="font-display text-6xl sm:text-7xl leading-none font-extrabold text-theme-text tracking-tight transition-colors duration-300">0</span>
 
-                <div id="lives-display" class="flex gap-1.5 mt-3 h-3 items-center"></div>
+                <div id="lives-display" class="flex gap-1.5 mt-3 h-2.5 items-center"></div>
 
-                <div id="message-display" class="absolute bottom-12 left-0 right-0 text-sm font-bold opacity-0 transition-opacity duration-300 z-10 text-center px-4 pointer-events-none"></div>
-
-                <div class="absolute bottom-4 left-0 right-0 flex gap-2 justify-center px-6 z-20">
-                    <button id="solve-btn" onclick="revealSolution()" class="hidden btn-press bg-theme-border text-theme-text font-bold text-xs px-4 py-2 rounded-full transition-all w-full shadow-md hover:opacity-80 flex items-center justify-center gap-1.5">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4v-3l7.44-7.44A6 6 0 0115 7h.01"></path></svg>
-                        Reveal Key
-                    </button>
-                    <button id="next-btn" onclick="startNewGame()" class="hidden btn-press bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transition-all w-full shadow-md hover:opacity-90 flex items-center justify-center gap-1.5">
-                        Next Puzzle
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-                    </button>
-                    <button id="share-btn" onclick="shareResult()" class="hidden btn-press bg-theme-primary text-theme-onPrimary font-bold text-xs px-4 py-2 rounded-full transition-all w-full shadow-md hover:opacity-90 flex items-center justify-center gap-1.5">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-                        Share
-                    </button>
-                    <button id="lb-btn" onclick="openLeaderboard()" class="hidden btn-press bg-theme-border text-theme-text font-bold text-xs px-4 py-2 rounded-full transition-all shadow-md hover:opacity-80 flex items-center justify-center gap-1.5">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    </button>
-                </div>
+                <div id="message-display" class="mt-2 w-full text-sm text-center px-2 min-h-[2.5rem] flex items-center justify-center opacity-0 transition-opacity duration-300"></div>
             </div>
         </div>
 
-        <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl p-3 h-[100px] flex flex-col justify-center items-center relative border border-theme-border shadow-sm overflow-hidden">
-            <div id="equation-display" class="font-display text-xl sm:text-2xl flex flex-wrap gap-1.5 items-center justify-center text-theme-text"></div>
-            <div id="live-result-display" class="font-display text-2xl font-bold text-theme-text mt-1 h-8 flex items-center justify-center"></div>
+        <!-- Result actions — only shown when a round ends, so nothing crams the target box -->
+        <div id="result-actions" class="hidden grid grid-cols-2 gap-2 flex-shrink-0">
+            <button id="solve-btn" onclick="revealSolution()" class="hidden res-btn bg-theme-card border border-theme-border text-theme-text hover:border-theme-primary/60">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4v-3l7.44-7.44A6 6 0 0115 7h.01"></path></svg>
+                Reveal Key
+            </button>
+            <button id="next-btn" onclick="startNewGame()" class="hidden res-btn bg-theme-primary text-theme-onPrimary hover:opacity-90">
+                Next Puzzle
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+            </button>
+            <button id="share-btn" onclick="shareResult()" class="hidden res-btn bg-theme-primary text-theme-onPrimary hover:opacity-90">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                Share
+            </button>
+            <button id="lb-btn" onclick="openLeaderboard()" class="hidden res-btn bg-theme-card border border-theme-border text-theme-text hover:border-theme-primary/60">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                Ranks
+            </button>
+        </div>
+
+        <div id="workbench" class="flex-shrink-0 bg-theme-card rounded-2xl px-3 py-2 min-h-[90px] flex flex-col justify-center items-center gap-1 relative border border-theme-border shadow-sm overflow-hidden">
+            <div id="equation-display" class="font-display text-base sm:text-lg flex flex-wrap gap-1 items-center justify-center text-theme-text max-h-[54px] overflow-y-auto modal-scroll leading-tight"></div>
+            <div id="live-result-display" class="font-display text-xl font-bold text-theme-text h-7 flex items-center justify-center"></div>
         </div>
 
         <div class="flex flex-col gap-3 flex-shrink-0">
@@ -347,10 +412,10 @@
         </div>
         <div id="operators-row" class="flex justify-center gap-3 sm:gap-4 flex-shrink-0"></div>
 
-        <div class="grid grid-cols-3 gap-3 mt-auto pt-2 flex-shrink-0">
-            <button onclick="handleUndo()" aria-label="Undo last input" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">UNDO</button>
-            <button onclick="handleClear()" aria-label="Clear equation" class="btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">CLEAR</button>
-            <button onclick="handleSubmit()" aria-label="Check answer" class="btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-2xl font-bold text-sm shadow-lg shadow-theme-primary/20 hover:opacity-90">CHECK</button>
+        <div class="grid grid-cols-3 gap-3 pt-1 flex-shrink-0">
+            <button onclick="handleUndo()" aria-label="Undo last input" class="action-btn btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">UNDO</button>
+            <button onclick="handleClear()" aria-label="Clear equation" class="action-btn btn-press bg-theme-card py-4 rounded-2xl font-bold text-sm text-theme-muted border border-theme-border hover:border-theme-primary/50">CLEAR</button>
+            <button onclick="handleSubmit()" aria-label="Check answer" class="action-btn btn-press bg-theme-primary text-theme-onPrimary py-4 rounded-2xl font-bold text-sm shadow-lg shadow-theme-primary/20 hover:opacity-90">CHECK</button>
         </div>
     </div>
 
@@ -429,10 +494,11 @@
         function displayMessage(msg, isRobot) {
             const m = document.getElementById('message-display');
             m.innerText = isRobot ? `>_ "${msg}"` : msg;
-            m.className = `absolute bottom-12 left-0 right-0 text-sm transition-opacity duration-300 z-10 text-center px-4 pointer-events-none ${isRobot ? 'bad-robot-text' : 'font-bold text-theme-primary'}`;
+            m.className = `mt-2 w-full text-sm text-center px-2 min-h-[2.5rem] flex items-center justify-center transition-opacity duration-300 leading-tight ${isRobot ? 'bad-robot-text' : 'font-bold text-theme-primary'}`;
             m.style.opacity = '1';
             clearTimeout(messageTimeout);
-            messageTimeout = setTimeout(() => { m.style.opacity = '0'; }, 3500);
+            // Persistent end-of-round messages shouldn't fade; transient hints do.
+            if (!isRoundOver) messageTimeout = setTimeout(() => { m.style.opacity = '0'; }, 3500);
         }
 
         function speakRobot(context) {
@@ -445,14 +511,19 @@
         }
 
         // ================= THEMES =================
+        // `preview` is the gradient shown as the swatch in the picker (the "flex").
+        // `tag` labels the rarity tier. Sorted by ascending cost.
         const themeConfig = [
-            { id: 'modern', name: 'Modern', cost: 0, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>' },
-            { id: 'cyber', name: 'Cyberpunk', cost: 500, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>' },
-            { id: 'retro', name: 'Arcade', cost: 1500, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>' },
-            { id: 'journal', name: 'Journal', cost: 3000, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>' },
-            { id: 'sunset', name: 'Sunset', cost: 7500, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>' },
-            { id: 'monochrome', name: 'Noir', cost: 15000, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>' },
-            { id: 'ethereal', name: 'Ethereal', cost: 30000, icon: '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>' }
+            { id: 'modern',     name: 'Modern',    cost: 0,     tag: 'Starter',   preview: 'linear-gradient(135deg,#6366f1 0%,#1a1d27 100%)' },
+            { id: 'cyber',      name: 'Cyberpunk', cost: 500,   tag: 'Common',    preview: 'linear-gradient(135deg,#22d3ee 0%,#a855f7 60%,#020617 100%)' },
+            { id: 'retro',      name: 'Arcade',    cost: 1500,  tag: 'Common',    preview: 'linear-gradient(135deg,#39ff14 0%,#0a0a0a 100%)' },
+            { id: 'journal',    name: 'Journal',   cost: 3000,  tag: 'Rare',      preview: 'linear-gradient(135deg,#ffffff 0%,#d4d4d8 100%)' },
+            { id: 'vapor',      name: 'Vaporwave', cost: 5000,  tag: 'Rare',      preview: 'linear-gradient(135deg,#ff71ce 0%,#b967ff 50%,#01cdfe 100%)' },
+            { id: 'sunset',     name: 'Sunset',    cost: 7500,  tag: 'Epic',      preview: 'linear-gradient(135deg,#ff007f 0%,#7c3aed 55%,#f59e0b 100%)' },
+            { id: 'monochrome', name: 'Noir',      cost: 15000, tag: 'Epic',      preview: 'linear-gradient(135deg,#ffffff 0%,#000000 100%)' },
+            { id: 'aurora',     name: 'Aurora',    cost: 20000, tag: 'Legendary', preview: 'linear-gradient(135deg,#34d399 0%,#2dd4bf 45%,#60a5fa 100%)' },
+            { id: 'ethereal',   name: 'Ethereal',  cost: 30000, tag: 'Legendary', preview: 'linear-gradient(135deg,#818cf8 0%,#c4b5fd 50%,#93c5fd 100%)' },
+            { id: 'gold',       name: 'Midas',     cost: 50000, tag: 'Mythic',    preview: 'linear-gradient(135deg,#f9e29c 0%,#f5d061 40%,#8a6d1a 100%)' }
         ];
 
         // ================= STATE =================
@@ -637,13 +708,17 @@
 
         function renderLives() {
             const el = document.getElementById('lives-display');
-            if (isRoundOver) { el.innerHTML = ''; return; }
+            // Only surface the tries indicator once a life has been lost — keeps a
+            // fresh puzzle clean, and the dots then read as a warning.
+            if (isRoundOver || livesRemaining >= MAX_LIVES) { el.innerHTML = ''; return; }
             let html = '';
             for (let i = 0; i < MAX_LIVES; i++) html += `<span class="life-dot ${i >= livesRemaining ? 'lost' : ''}"></span>`;
             el.innerHTML = html;
         }
 
         // ================= GAME FLOW =================
+        function showResults() { document.getElementById('result-actions').classList.remove('hidden'); }
+
         function startNewGame() {
             clearInterval(timerInterval); timerInterval = null; timeElapsed = 0;
             setTimerText(0);
@@ -657,7 +732,7 @@
 
             expression = []; isRoundOver = false;
             document.getElementById('message-display').style.opacity = '0';
-            ['share-btn','solve-btn','next-btn','lb-btn'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['result-actions','share-btn','solve-btn','next-btn','lb-btn'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById('target-zone').classList.remove('glow-effect');
 
             if (isDailyMode && localStorage.getItem('dcypher_daily_played') === todaySeed) {
@@ -670,6 +745,7 @@
                     document.getElementById('share-btn').classList.remove('hidden');
                 }
                 document.getElementById('lb-btn').classList.remove('hidden');
+                showResults();
             }
             renderLives();
             render();
@@ -765,6 +841,7 @@
                 document.getElementById('solve-btn').classList.remove('hidden');
                 document.getElementById('next-btn').classList.remove('hidden');
             }
+            showResults();
         }
 
         function handleExactMatch() {
@@ -807,6 +884,7 @@
                 document.getElementById('share-btn').classList.remove('hidden');
                 document.getElementById('next-btn').classList.remove('hidden');
             }
+            showResults();
             checkAchievements();
             updateEconomyUI();
         }
@@ -1157,6 +1235,7 @@
         function openModal(id) {
             const m = document.getElementById(id);
             m.classList.remove('hidden');
+            if (m.firstElementChild) m.firstElementChild.scrollTop = 0; // always show the header/close
             setTimeout(() => m.classList.remove('opacity-0'), 10);
         }
         function closeModal(id) {
@@ -1169,16 +1248,20 @@
             document.getElementById('theme-list').innerHTML = themeConfig.map(t => {
                 const isUnlocked = score >= t.cost || t.cost === 0;
                 const selected = currentTheme === t.id;
-                const icon = t.icon.replace('w-5 h-5 mr-3', 'w-6 h-6');
                 let badge;
-                if (selected) badge = '<span class="text-[10px] font-bold text-theme-primary uppercase tracking-wide">Active</span>';
-                else if (isUnlocked) badge = '<span class="text-[10px] text-theme-muted uppercase tracking-wide">Tap to use</span>';
-                else badge = `<span class="text-[10px] font-mono text-theme-muted font-bold flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> ${fmtNum(t.cost)}</span>`;
+                if (selected) badge = '<span class="text-[10px] font-bold text-theme-primary uppercase tracking-wide">✓ Active</span>';
+                else if (isUnlocked) badge = '<span class="text-[10px] text-theme-muted uppercase tracking-wide">Tap to equip</span>';
+                else badge = `<span class="text-[10px] font-mono text-theme-muted font-bold flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> ${fmtNum(t.cost)} pts</span>`;
                 return `<button ${!isUnlocked ? 'disabled' : ''} onclick="applyTheme('${t.id}'); closeMenu();"
-                    class="btn-press p-3 rounded-xl border flex flex-col items-center gap-1.5 text-center transition-all ${selected ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg/50'} ${!isUnlocked ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:border-theme-primary'}">
-                    <span class="${selected ? 'text-theme-primary' : 'text-theme-text'}">${icon}</span>
-                    <span class="font-bold text-xs ${selected ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span>
-                    ${badge}
+                    class="btn-press p-2 rounded-xl border flex flex-col gap-1.5 text-left transition-all ${selected ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg/50'} ${!isUnlocked ? 'opacity-70 cursor-not-allowed' : 'hover:border-theme-primary'}">
+                    <div class="w-full h-12 rounded-lg relative overflow-hidden ${!isUnlocked ? 'grayscale-[0.4]' : ''}" style="background:${t.preview}">
+                        <span class="absolute top-1 right-1 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/40 text-white">${t.tag}</span>
+                        ${!isUnlocked ? '<div class="absolute inset-0 flex items-center justify-center bg-black/35"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></div>' : ''}
+                    </div>
+                    <div class="flex items-center justify-between px-0.5">
+                        <span class="font-bold text-xs ${selected ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span>
+                    </div>
+                    <div class="px-0.5 -mt-1">${badge}</div>
                 </button>`;
             }).join('');
             document.getElementById('nickname-input').value = nickname;
@@ -1203,7 +1286,7 @@
                 eqEl.innerHTML = `<span class="text-theme-muted text-sm font-sans uppercase tracking-widest">Deploy all 7 nodes</span>`;
                 resEl.innerHTML = "";
             } else {
-                eqEl.innerHTML = expression.map(item => item.type === 'num' ? `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-2 py-1 rounded-lg shadow-sm">${item.value}</span>` : `<span class="text-theme-primary font-bold mx-1">${item.value}</span>`).join('');
+                eqEl.innerHTML = expression.map(item => item.type === 'num' ? `<span class="text-theme-text border border-theme-border bg-theme-bg/50 px-1.5 py-0.5 rounded-md">${item.value}</span>` : `<span class="text-theme-primary font-bold mx-0.5">${item.value}</span>`).join('');
             }
 
             if (expression.length > 0 && expression[expression.length - 1].type === 'num') {
@@ -1218,8 +1301,8 @@
 
             const createNumBtn = (num, i) => {
                 const isUsed = expression.some(item => item.type === 'num' && item.index === i);
-                if (isUsed || isRoundOver) return `<button disabled aria-label="Number ${num} used" class="font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full transition-all border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed">${num}</button>`;
-                return `<button onclick="handleNumberClick(${num}, ${i})" aria-label="Add number ${num}" class="btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full bg-theme-card border border-theme-border text-theme-text shadow-sm hover:border-theme-primary/50">${num}</button>`;
+                if (isUsed || isRoundOver) return `<button disabled aria-label="Number ${num} used" class="pad-btn font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full transition-all border border-theme-border bg-transparent text-theme-muted opacity-30 cursor-not-allowed">${num}</button>`;
+                return `<button onclick="handleNumberClick(${num}, ${i})" aria-label="Add number ${num}" class="pad-btn btn-press font-display py-4 sm:py-5 rounded-2xl text-2xl font-bold w-full bg-theme-card border border-theme-border text-theme-text shadow-sm hover:border-theme-primary/50">${num}</button>`;
             };
 
             document.getElementById('numbers-row-1').innerHTML = numbers.slice(0, 4).map((num, i) => createNumBtn(num, i)).join('');
