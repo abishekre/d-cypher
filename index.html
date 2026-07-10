@@ -34,7 +34,14 @@
         [data-theme="monochrome"] { --bg: #000000; --card: #111111; --primary: #ffffff; --on-primary: #000000; --text: #ffffff; --muted: #666666; --border: #333333; --glow: rgba(255,255,255,0.2); --font-sans: 'Space Mono', monospace; --font-display: 'Inter', sans-serif; }
         [data-theme="ethereal"] { --bg: #e0e7ff; --card: rgba(255,255,255,0.6); --primary: #4f46e5; --on-primary: #ffffff; --text: #1e1b4b; --muted: #6366f1; --border: rgba(255,255,255,0.9); --glow: rgba(79,70,229,0.2); --font-sans: 'Inter', sans-serif; --font-display: 'Outfit', sans-serif; }
 
-        body { background-color: var(--bg); transition: background-color 0.5s ease, color 0.5s ease; -webkit-tap-highlight-color: transparent; }
+        /* Honour the iOS safe area (Dynamic Island / notch / home indicator).
+           Uses env() insets with sensible minimums; insets are 0 on other platforms. */
+        body { background-color: var(--bg); transition: background-color 0.5s ease, color 0.5s ease; -webkit-tap-highlight-color: transparent;
+            padding-top: max(1rem, env(safe-area-inset-top));
+            padding-right: max(1rem, env(safe-area-inset-right));
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+            padding-left: max(1rem, env(safe-area-inset-left));
+        }
         .btn-press { transition: transform 0.05s, background-color 0.2s, box-shadow 0.2s, border-color 0.2s; }
         .btn-press:active:not(:disabled) { transform: scale(0.92); }
         .glow-effect { box-shadow: 0 0 35px var(--glow); border-color: var(--primary) !important; }
@@ -55,7 +62,7 @@
         @keyframes confetti-fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 
         /* Achievement toast */
-        #toast-layer { position: fixed; top: 0; left: 0; right: 0; z-index: 70; display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 12px; pointer-events: none; }
+        #toast-layer { position: fixed; top: 0; left: 0; right: 0; z-index: 70; display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: max(12px, env(safe-area-inset-top)); pointer-events: none; }
         .ach-toast { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--primary); color: var(--text); padding: 10px 16px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px var(--glow); transform: translateY(-140%); opacity: 0; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s; max-width: 90vw; }
         .ach-toast.show { transform: translateY(0); opacity: 1; }
 
@@ -65,19 +72,25 @@
 
         .modal-scroll::-webkit-scrollbar { width: 6px; }
         .modal-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        .section-label { font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .chev { transform: rotate(180deg); }
+        .chev { transition: transform 0.2s ease; }
     </style>
 </head>
-<body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center p-4 sm:p-6 overflow-hidden relative">
+<body class="text-theme-text font-sans antialiased min-h-[100dvh] flex flex-col items-center overflow-hidden relative">
 
     <div id="confetti-layer"></div>
     <div id="toast-layer"></div>
 
     <!-- ============ SYSTEM MENU ============ -->
     <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-5">
+        <div class="bg-theme-card border border-theme-border rounded-3xl p-5 w-full max-w-sm max-h-[88vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
             <div class="flex justify-between items-center">
-                <h2 class="font-display text-2xl font-bold text-theme-text">System Menu</h2>
-                <button onclick="closeMenu()" aria-label="Close menu" class="text-theme-muted hover:text-theme-text transition-colors font-bold text-2xl">&times;</button>
+                <h2 class="font-display text-2xl font-bold text-theme-text">Menu</h2>
+                <button onclick="closeMenu()" aria-label="Close menu" class="text-theme-muted hover:text-theme-text transition-colors font-bold text-2xl leading-none">&times;</button>
             </div>
 
             <button id="install-btn" onclick="installApp()" class="hidden w-full bg-theme-text text-theme-bg font-bold py-3 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center gap-2">
@@ -101,6 +114,7 @@
                 </button>
             </div>
 
+            <!-- Game Mode -->
             <div class="bg-theme-bg/50 border border-theme-border p-4 rounded-2xl flex justify-between items-center">
                 <div>
                     <h3 class="font-bold text-theme-text">Game Mode</h3>
@@ -112,63 +126,75 @@
                 </button>
             </div>
 
-            <!-- Identity -->
+            <!-- Handle -->
             <div class="bg-theme-bg/50 border border-theme-border p-4 rounded-2xl">
-                <h3 class="font-bold text-theme-text mb-1">Your Handle</h3>
-                <p class="text-xs text-theme-muted mb-3">Shown on the daily leaderboard. No account needed.</p>
-                <div class="flex gap-2">
-                    <input id="nickname-input" maxlength="20" spellcheck="false" class="flex-1 bg-theme-card border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text font-bold outline-none" />
-                    <button onclick="saveNickname()" class="btn-press bg-theme-primary text-theme-onPrimary text-xs font-bold px-4 rounded-lg">SAVE</button>
-                </div>
-            </div>
-
-            <!-- Backup & Restore (login-free account portability) -->
-            <div class="bg-theme-bg/50 border border-theme-border p-4 rounded-2xl">
-                <h3 class="font-bold text-theme-text mb-1">Backup &amp; Restore</h3>
-                <p class="text-xs text-theme-muted mb-3">Your account lives on this device. Save this code to restore your handle, points &amp; rank elsewhere. Keep it private — anyone with it is you.</p>
-                <div class="flex gap-2 mb-2">
-                    <input id="recovery-code" readonly class="flex-1 bg-theme-card border border-theme-border rounded-lg px-3 py-2 text-[11px] text-theme-muted font-mono outline-none" />
-                    <button onclick="copyRecovery()" class="btn-press bg-theme-primary text-theme-onPrimary text-xs font-bold px-4 rounded-lg">COPY</button>
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-bold text-theme-text">Your Handle</h3>
+                    <span class="text-[10px] text-theme-muted uppercase tracking-wide">Must be unique</span>
                 </div>
                 <div class="flex gap-2">
-                    <input id="restore-code" placeholder="Paste a code to restore…" spellcheck="false" class="flex-1 bg-theme-card border border-theme-border rounded-lg px-3 py-2 text-[11px] text-theme-text font-mono outline-none" />
-                    <button onclick="restoreAccount()" class="btn-press bg-theme-border text-theme-text text-xs font-bold px-4 rounded-lg">RESTORE</button>
+                    <input id="nickname-input" maxlength="20" spellcheck="false" class="flex-1 min-w-0 bg-theme-card border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text font-bold outline-none focus:border-theme-primary" />
+                    <button id="save-name-btn" onclick="saveNickname()" class="btn-press bg-theme-primary text-theme-onPrimary text-xs font-bold px-4 rounded-lg shrink-0">SAVE</button>
                 </div>
+                <p id="name-status" class="text-xs mt-2 h-4 transition-colors" aria-live="polite"></p>
             </div>
 
-            <!-- Toggles -->
-            <div class="bg-theme-bg/50 border border-theme-border rounded-2xl divide-y divide-theme-border">
-                <label class="flex justify-between items-center p-4 cursor-pointer">
-                    <div>
-                        <span class="font-bold text-sm text-theme-text">Daily Reminder</span>
-                        <p class="text-xs text-theme-muted">Get pinged when the new Crypt drops.</p>
-                    </div>
-                    <input type="checkbox" id="notif-toggle" onchange="toggleNotifications(this.checked)" class="w-6 h-6 accent-theme-primary cursor-pointer">
-                </label>
-                <label class="flex justify-between items-center p-4 cursor-pointer">
-                    <span class="font-bold text-sm text-theme-text">Sound</span>
-                    <input type="checkbox" id="sound-toggle" onchange="setPref('sound', this.checked)" class="w-6 h-6 accent-theme-primary cursor-pointer">
-                </label>
-                <label class="flex justify-between items-center p-4 cursor-pointer">
-                    <span class="font-bold text-sm text-theme-text">Haptics</span>
-                    <input type="checkbox" id="haptics-toggle" onchange="setPref('haptics', this.checked)" class="w-6 h-6 accent-theme-primary cursor-pointer">
-                </label>
-                <div class="flex justify-between items-center p-4 transition-all" id="robot-container">
-                    <div>
-                        <h3 class="font-bold text-rose-500 font-mono flex items-center gap-2 text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            Terminal Mockery
-                        </h3>
-                        <p class="text-xs text-theme-muted">Enable relentless AI insults.</p>
-                    </div>
-                    <input type="checkbox" id="bad-robot-toggle" onchange="toggleRobot(this.checked)" class="w-6 h-6 accent-rose-500 cursor-pointer">
-                </div>
-            </div>
-
+            <!-- Settings -->
             <div>
-                <h3 class="font-bold text-sm text-theme-muted uppercase tracking-widest mb-2">Aesthetics (Points)</h3>
-                <div id="theme-list" class="flex flex-col gap-2"></div>
+                <h3 class="section-label">Settings</h3>
+                <div class="bg-theme-bg/50 border border-theme-border rounded-2xl divide-y divide-theme-border">
+                    <label class="flex justify-between items-center gap-3 p-4 cursor-pointer">
+                        <div>
+                            <span class="font-bold text-sm text-theme-text">Daily Reminder</span>
+                            <p class="text-xs text-theme-muted">Get pinged when the new Crypt drops.</p>
+                        </div>
+                        <input type="checkbox" id="notif-toggle" onchange="toggleNotifications(this.checked)" class="w-6 h-6 accent-theme-primary cursor-pointer shrink-0">
+                    </label>
+                    <label class="flex justify-between items-center p-4 cursor-pointer">
+                        <span class="font-bold text-sm text-theme-text">Sound</span>
+                        <input type="checkbox" id="sound-toggle" onchange="setPref('sound', this.checked)" class="w-6 h-6 accent-theme-primary cursor-pointer">
+                    </label>
+                    <label class="flex justify-between items-center p-4 cursor-pointer">
+                        <span class="font-bold text-sm text-theme-text">Haptics</span>
+                        <input type="checkbox" id="haptics-toggle" onchange="setPref('haptics', this.checked)" class="w-6 h-6 accent-theme-primary cursor-pointer">
+                    </label>
+                    <label class="flex justify-between items-center gap-3 p-4 cursor-pointer transition-all" id="robot-container">
+                        <div>
+                            <span class="font-bold text-sm text-rose-500 font-mono flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                Terminal Mockery
+                            </span>
+                            <p class="text-xs text-theme-muted">Enable relentless AI insults.</p>
+                        </div>
+                        <input type="checkbox" id="bad-robot-toggle" onchange="toggleRobot(this.checked)" class="w-6 h-6 accent-rose-500 cursor-pointer shrink-0">
+                    </label>
+                </div>
             </div>
+
+            <!-- Themes -->
+            <div>
+                <h3 class="section-label">Themes <span class="normal-case opacity-70">· unlock with points</span></h3>
+                <div id="theme-list" class="grid grid-cols-2 gap-2"></div>
+            </div>
+
+            <!-- Advanced: account portability, tucked away -->
+            <details class="bg-theme-bg/50 border border-theme-border rounded-2xl">
+                <summary class="p-4 font-bold text-sm text-theme-text cursor-pointer flex items-center justify-between">
+                    <span>Account Backup &amp; Restore</span>
+                    <svg class="chev w-4 h-4 text-theme-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </summary>
+                <div class="px-4 pb-4">
+                    <p class="text-xs text-theme-muted mb-3">No login. Save this code to restore your handle, points &amp; rank on another device. Keep it private — anyone with it is you.</p>
+                    <div class="flex gap-2 mb-2">
+                        <input id="recovery-code" readonly class="flex-1 min-w-0 bg-theme-card border border-theme-border rounded-lg px-3 py-2 text-[11px] text-theme-muted font-mono outline-none" />
+                        <button onclick="copyRecovery()" class="btn-press bg-theme-primary text-theme-onPrimary text-xs font-bold px-4 rounded-lg shrink-0">COPY</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="restore-code" placeholder="Paste a code to restore…" spellcheck="false" class="flex-1 min-w-0 bg-theme-card border border-theme-border rounded-lg px-3 py-2 text-[11px] text-theme-text font-mono outline-none" />
+                        <button onclick="restoreAccount()" class="btn-press bg-theme-border text-theme-text text-xs font-bold px-4 rounded-lg shrink-0">RESTORE</button>
+                    </div>
+                </div>
+            </details>
         </div>
     </div>
 
@@ -490,7 +516,6 @@
         }
 
         function checkStreak() {
-            const todaySeed = getTodaySeed();
             const lastPlayed = localStorage.getItem('dcypher_lastDaily');
             streak = parseInt(localStorage.getItem('dcypher_streak')) || 0;
             maxStreak = parseInt(localStorage.getItem('dcypher_maxstreak')) || 0;
@@ -520,7 +545,6 @@
             document.getElementById('menu-mode-toggle').innerHTML = `${btnIcon} ${isDailyMode ? "DAILY CRYPT" : "ENDLESS"}`;
             document.getElementById('mode-desc').innerText = isDailyMode ? "One universal puzzle per day." : "Endless mode for farming points.";
             document.getElementById('mode-label').innerText = isDailyMode ? "The Daily Crypt" : "Target";
-            
             startNewGame();
             closeMenu();
         }
@@ -532,16 +556,57 @@
             else container.classList.remove('shadow-[0_0_15px_rgba(244,63,94,0.3)]', 'border-rose-500');
         }
 
-        function saveNickname() {
+        function setNameStatus(msg, kind) {
+            const el = document.getElementById('name-status');
+            el.innerText = msg;
+            el.className = `text-xs mt-2 h-4 transition-colors ${kind === 'error' ? 'text-rose-500' : kind === 'ok' ? 'text-emerald-500' : 'text-theme-muted'}`;
+        }
+
+        async function saveNickname() {
             const input = document.getElementById('nickname-input');
+            const btn = document.getElementById('save-name-btn');
             let val = input.value.trim().slice(0, 20);
-            if (!val) { val = nickname; }
-            nickname = val; input.value = val;
-            localStorage.setItem('dcypher_name', nickname);
-            syncPoints(); // update name on the all-time board
-            displayMessage('Handle saved.', false);
-            const btn = event.target; const old = btn.innerText;
-            btn.innerText = 'SAVED'; setTimeout(() => btn.innerText = old, 1200);
+            if (!val) { input.value = nickname; setNameStatus('Handle cannot be empty.', 'error'); return; }
+            if (val.toLowerCase() === nickname.toLowerCase()) {
+                nickname = val; input.value = val; localStorage.setItem('dcypher_name', nickname);
+                setNameStatus('Handle saved ✓', 'ok'); return;
+            }
+            const old = btn.innerText; btn.disabled = true; btn.innerText = '…';
+            setNameStatus('Checking availability…', 'info');
+            try {
+                // Reserve the handle server-side (case-insensitive unique).
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/claim_nickname`, {
+                    method: 'POST', headers: sbHeaders(), body: JSON.stringify({ p_device: deviceId, p_nick: val })
+                });
+                if (!res.ok) throw new Error('rpc ' + res.status);
+                const result = await res.json(); // "ok" | "taken" | "invalid"
+                if (result === 'ok') {
+                    nickname = val; input.value = val; localStorage.setItem('dcypher_name', nickname);
+                    setNameStatus('Handle saved ✓', 'ok');
+                } else if (result === 'taken') {
+                    input.value = nickname; setNameStatus(`"${val}" is already taken — pick another.`, 'error');
+                } else {
+                    input.value = nickname; setNameStatus('That handle is invalid.', 'error');
+                }
+            } catch (e) {
+                input.value = nickname; setNameStatus("Couldn't reach the server — try again.", 'error');
+            }
+            btn.disabled = false; btn.innerText = old;
+        }
+
+        // A neutral toast that renders in #toast-layer (z-70), so menu/modal
+        // actions get visible feedback ABOVE the overlay (unlike displayMessage,
+        // which is painted on the game board behind an open modal).
+        function toast(msg, kind = 'info') {
+            const color = kind === 'error' ? '#f43f5e' : kind === 'ok' ? '#10b981' : 'var(--primary)';
+            const glyph = kind === 'error' ? '⚠️' : kind === 'ok' ? '✓' : 'ℹ️';
+            const t = document.createElement('div');
+            t.className = 'ach-toast';
+            t.style.borderColor = color;
+            t.innerHTML = `<span style="color:${color};font-size:18px">${glyph}</span><div style="font-weight:bold;font-size:13px">${escapeHtml(msg)}</div>`;
+            document.getElementById('toast-layer').appendChild(t);
+            requestAnimationFrame(() => t.classList.add('show'));
+            setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 2400);
         }
 
         // ================= TIMER =================
@@ -589,7 +654,8 @@
                 const won = localStorage.getItem('dcypher_daily_won') === todaySeed;
                 displayMessage(won ? "YOU DECRYPTED TODAY'S CRYPT!" : "DAILY CRYPT FAILED. Back tomorrow.", false);
                 if (won) {
-                    setTimerText(parseInt(localStorage.getItem('dcypher_daily_time')) || 0);
+                    timeElapsed = parseInt(localStorage.getItem('dcypher_daily_time')) || 0;
+                    setTimerText(timeElapsed);
                     document.getElementById('share-btn').classList.remove('hidden');
                 }
                 document.getElementById('lb-btn').classList.remove('hidden');
@@ -672,6 +738,7 @@
         }
 
         function endRound(won) {
+            clearInterval(timerInterval); timerInterval = null;
             isRoundOver = true;
             renderLives();
             render();
@@ -933,7 +1000,7 @@
             document.getElementById('lb-subtitle').innerText = `Highest total points · all time`;
             const list = document.getElementById('lb-list'), yourank = document.getElementById('lb-yourank');
             try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/players?order=score.desc&limit=50&select=nickname,score,device_id`, { headers: sbHeaders() });
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/players?score=gt.0&order=score.desc&limit=50&select=nickname,score,device_id`, { headers: sbHeaders() });
                 if (!res.ok) throw new Error('fetch failed');
                 const rows = await res.json();
                 if (currentBoard !== 'points') return;
@@ -948,14 +1015,11 @@
 
         // ================= ACCOUNT BACKUP / RESTORE (no login) =================
         function copyRecovery() {
-            fallbackCopy(deviceId, () => {
-                const el = document.getElementById('restore-code'); // reuse message
-                displayMessage('Recovery code copied.', false);
-            });
+            fallbackCopy(deviceId, () => toast('Recovery code copied', 'ok'));
         }
         async function restoreAccount() {
             const code = document.getElementById('restore-code').value.trim();
-            if (code.length < 8 || code.length > 64) { displayMessage('Invalid recovery code.', false); return; }
+            if (code.length < 8 || code.length > 64) { toast('Invalid recovery code.', 'error'); return; }
             deviceId = code; localStorage.setItem('dcypher_device', code);
             document.getElementById('recovery-code').value = deviceId;
             document.getElementById('restore-code').value = '';
@@ -967,11 +1031,11 @@
                     score = Math.max(score, rows[0].score); localStorage.setItem('dcypher_score', score);
                     document.getElementById('nickname-input').value = nickname;
                     updateEconomyUI();
-                    displayMessage(`Restored ${nickname} · ${fmtNum(score)} pts ✓`, false);
+                    toast(`Restored ${nickname} · ${fmtNum(score)} pts`, 'ok');
                 } else {
-                    displayMessage('Identity set. No points on record yet.', false);
+                    toast('Identity set. No points on record yet.', 'info');
                 }
-            } catch (e) { displayMessage('Restored identity (points sync pending).', false); }
+            } catch (e) { toast('Restored identity (points sync pending).', 'info'); }
         }
 
         // ================= PUSH NOTIFICATIONS =================
@@ -986,11 +1050,11 @@
             const cb = document.getElementById('notif-toggle');
             if (on) {
                 if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
-                    displayMessage('Notifications not supported here.', false); cb.checked = false; return;
+                    toast('Notifications not supported here.', 'error'); cb.checked = false; return;
                 }
                 let perm;
                 try { perm = await Notification.requestPermission(); } catch (e) { perm = 'denied'; }
-                if (perm !== 'granted') { displayMessage('Permission denied for notifications.', false); cb.checked = false; return; }
+                if (perm !== 'granted') { toast('Notification permission denied.', 'error'); cb.checked = false; return; }
                 try {
                     const reg = await navigator.serviceWorker.ready;
                     let sub = await reg.pushManager.getSubscription();
@@ -1001,8 +1065,8 @@
                         body: JSON.stringify({ p_device: deviceId, p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth })
                     });
                     localStorage.setItem('dcypher_notif', 'true');
-                    displayMessage('Daily reminders on 🔔', false);
-                } catch (e) { displayMessage('Could not enable reminders.', false); cb.checked = false; }
+                    toast('Daily reminders on 🔔', 'ok');
+                } catch (e) { toast('Could not enable reminders.', 'error'); cb.checked = false; }
             } else {
                 localStorage.setItem('dcypher_notif', 'false');
                 try {
@@ -1013,7 +1077,7 @@
                         await sub.unsubscribe();
                     }
                 } catch (e) {}
-                displayMessage('Daily reminders off.', false);
+                toast('Daily reminders off.', 'info');
             }
         }
 
@@ -1093,15 +1157,22 @@
         function openMenu() {
             document.getElementById('theme-list').innerHTML = themeConfig.map(t => {
                 const isUnlocked = score >= t.cost || t.cost === 0;
+                const selected = currentTheme === t.id;
+                const icon = t.icon.replace('w-5 h-5 mr-3', 'w-6 h-6');
+                let badge;
+                if (selected) badge = '<span class="text-[10px] font-bold text-theme-primary uppercase tracking-wide">Active</span>';
+                else if (isUnlocked) badge = '<span class="text-[10px] text-theme-muted uppercase tracking-wide">Tap to use</span>';
+                else badge = `<span class="text-[10px] font-mono text-theme-muted font-bold flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> ${fmtNum(t.cost)}</span>`;
                 return `<button ${!isUnlocked ? 'disabled' : ''} onclick="applyTheme('${t.id}'); closeMenu();"
-                    class="btn-press w-full text-left p-4 rounded-xl border ${currentTheme === t.id ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg/50'}
-                    ${!isUnlocked ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:border-theme-primary'} flex justify-between items-center transition-all">
-                    <div class="flex items-center text-theme-text">${t.icon}<span class="font-bold text-sm ${currentTheme === t.id ? 'text-theme-primary' : ''}">${t.name}</span></div>
-                    ${!isUnlocked ? `<span class="text-xs font-mono text-theme-muted font-bold flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg> ${fmtNum(t.cost)} pts</span>` : ''}
+                    class="btn-press p-3 rounded-xl border flex flex-col items-center gap-1.5 text-center transition-all ${selected ? 'border-theme-primary bg-theme-primary/10' : 'border-theme-border bg-theme-bg/50'} ${!isUnlocked ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:border-theme-primary'}">
+                    <span class="${selected ? 'text-theme-primary' : 'text-theme-text'}">${icon}</span>
+                    <span class="font-bold text-xs ${selected ? 'text-theme-primary' : 'text-theme-text'}">${t.name}</span>
+                    ${badge}
                 </button>`;
             }).join('');
             document.getElementById('nickname-input').value = nickname;
             document.getElementById('recovery-code').value = deviceId;
+            setNameStatus('', '');
             openModal('menu-modal');
             toggleRobot(badRobotMode);
         }
@@ -1146,12 +1217,14 @@
         }
 
         // ================= KEYBOARD =================
+        const MODAL_IDS = ['menu-modal', 'stats-modal', 'lb-modal', 'tutorial-modal'];
+        function anyModalOpen() { return MODAL_IDS.some(id => !document.getElementById(id).classList.contains('hidden')); }
         document.addEventListener('keydown', (e) => {
-            if (document.querySelector('.fixed:not(.hidden):not(#confetti-layer)') && !e.target.closest('#target-zone')) {
-                // if a modal input is focused, don't hijack
-            }
-            if (e.target.tagName === 'INPUT') return;
             const k = e.key;
+            // Escape always closes any open modal.
+            if (k === 'Escape') { MODAL_IDS.forEach(id => { if (!document.getElementById(id).classList.contains('hidden')) closeModal(id); }); return; }
+            // Never drive the game while typing in a field or while a modal is up.
+            if (e.target.tagName === 'INPUT' || anyModalOpen()) return;
             if (k >= '1' && k <= '7') { const i = parseInt(k) - 1; if (numbers[i] !== undefined) handleNumberClick(numbers[i], i); }
             else if (k === '+') handleOperatorClick('+');
             else if (k === '-') handleOperatorClick('-');
@@ -1160,7 +1233,6 @@
             else if (k === 'Enter') handleSubmit();
             else if (k === 'Backspace') { e.preventDefault(); handleUndo(); }
             else if (k === 'Delete' || k === 'c' || k === 'C') handleClear();
-            else if (k === 'Escape') { ['menu-modal','stats-modal','lb-modal','tutorial-modal'].forEach(id => { if(!document.getElementById(id).classList.contains('hidden')) closeModal(id); }); }
         });
 
         window.onload = initApp;
