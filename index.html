@@ -73,6 +73,17 @@
         .modal-scroll::-webkit-scrollbar { width: 6px; }
         .modal-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+        /* Modal overlay: real flex centering + iOS safe-area padding so the
+           card is centered within the safe area (never under the Dynamic Island). */
+        .modal-overlay {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding-top: max(1rem, env(safe-area-inset-top));
+            padding-right: max(1rem, env(safe-area-inset-right));
+            padding-bottom: max(1rem, env(safe-area-inset-bottom));
+            padding-left: max(1rem, env(safe-area-inset-left));
+        }
+        .modal-overlay.hidden { display: none; }
+
         .section-label { font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
@@ -86,7 +97,7 @@
     <div id="toast-layer"></div>
 
     <!-- ============ SYSTEM MENU ============ -->
-    <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div id="menu-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300 flex">
         <div class="bg-theme-card border border-theme-border rounded-3xl p-5 w-full max-w-sm max-h-[88vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">Menu</h2>
@@ -199,7 +210,7 @@
     </div>
 
     <!-- ============ STATS MODAL ============ -->
-    <div id="stats-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div id="stats-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center flex p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-5">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">Statistics</h2>
@@ -233,7 +244,7 @@
     </div>
 
     <!-- ============ LEADERBOARD MODAL ============ -->
-    <div id="lb-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div id="lb-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-centerflex p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto modal-scroll shadow-2xl flex flex-col gap-4">
             <div class="flex justify-between items-center">
                 <h2 class="font-display text-2xl font-bold text-theme-text">Leaderboard</h2>
@@ -250,7 +261,7 @@
     </div>
 
     <!-- ============ TUTORIAL MODAL ============ -->
-    <div id="tutorial-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div id="tutorial-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex-col items-center flex justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-theme-card border border-theme-border rounded-3xl p-6 w-full max-w-sm shadow-2xl flex flex-col gap-4">
             <h2 class="font-display text-2xl font-bold text-theme-text">How to Play</h2>
             <div class="flex flex-col gap-3 text-sm text-theme-text">
@@ -290,7 +301,7 @@
         </header>
 
         <div id="target-zone-container" class="flex-shrink-0 w-full relative">
-            <div id="target-zone" class="bg-theme-card rounded-[2rem] pt-8 pb-14 px-6 sm:px-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[220px]">
+            <div id="target-zone" class="flex bg-theme-card rounded-[2rem] pt-8 pb-14 px-6 sm:px-8 flex flex-col items-center justify-center relative overflow-hidden border border-theme-border shadow-xl min-h-[220px]">
                 <div class="flex justify-between w-full absolute top-5 px-8">
                     <span id="mode-label" class="text-theme-primary text-xs font-bold uppercase tracking-widest">Target</span>
                     <span id="timer-display" class="text-theme-muted font-mono text-xs flex items-center gap-1">
